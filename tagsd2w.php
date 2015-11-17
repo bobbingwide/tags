@@ -1,210 +1,223 @@
 <?php // (C) Copyright Bobbing Wide 2015
 
+/*
+Plugin Name: TAGS 
+Plugin URI: http://www.bobbingwide.com/oik-plugins/tagsd2w
+Description: Convert TAGS from Drupal to WordPress
+Version: 0.0.1
+Author: bobbingwide
+Author URI: http://www.oik-plugins.com/author/bobbingwide
+Text Domain: tags
+Domain Path: /languages/
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+    Copyright 2015 Bobbing Wide (email : herb@bobbingwide.com )
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2,
+    as published by the Free Software Foundation.
+
+    You may NOT assume that you can use any other version of the GPL.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    The license for this software can likely be found here:
+    http://www.gnu.org/licenses/gpl-2.0.html
+
+*/
+
+
+td2w_loaded();
+
+/**
+ * Function to invoke when plugin loaded
+ *
+ * Behave accordingly
+ */
+function td2w_loaded() {
+
+	if ( PHP_SAPI == "cli" ) {
+		if ( $_SERVER['argv'][0] == "boot-fs.php" )   {
+			// This is WP-CLI
+		} else {
+			//oik_require_lib( "oik-cli" );
+			oik_batch_load_cli_functions();
+			if ( oik_batch_run_me( __FILE__ ) ) {
+				td2w_run();
+				echo "End cli:" . __FUNCTION__ . PHP_EOL; 
+			}
+		}
+	} else {
+		//echo PHP_SAPI;
+		//echo PHP_EOL;
+		if ( function_exists( "bw_trace2" ) ) {
+			bw_trace2( PHP_SAPI, "tagsd2w loaded in WordPress environment?" );
+		}
+		if ( function_exists( "add_action" ) ) {
+			// if ( bw_is_wordpress() ) {
+			//add_action( "admin_notices", "oik_batch_activation" );
+			add_action( "oik_fields_loaded", "tagsd2w_oik_fields_loaded" );
+			add_action( "admin_menu", "tagsd2w_admin_menu" );
+			add_filter( 'set-screen-option', "tagsd2w_set_screen_option", 10, 3 );
+		}
+	}
+	
+
+}
+
+/**
+ * Implement an admin menu
+ */
+function tagsd2w_admin_menu() {
+
+
+}
+
 /**
  *
+ */
+function tagsd2w_oik_fields_loaded() {
+	tagsd2w_register_categories();
+	tagsd2w_register_post_types();
+}
 
-y/n | table_name                  | table_rows | target
--| ----------------------------- | ------------ | ------ 
-n | access                      |          0 |
-n | actions                     |         24 |
-n | actions_aid                 |          2 |
-n | advanced_help_index         |        171 |
-n | aggregator_category         |          1 |
-n | aggregator_category_feed    |          1 |
-n | aggregator_category_item    |          0 |
-n | aggregator_feed             |          1 |
-n | aggregator_item             |          0 |
-n | authmap                     |          0 |
-n | backup_migrate_destinations |          0 |
-n | backup_migrate_profiles     |          1 |
-n | backup_migrate_schedules    |          0 |
-n | batch                       |          0 | 
-? | blocks                      |         86 | widgets
-n | blocks_roles                |          0 | widgets
-n | boxes                       |          3 |
-n | cache                       |         21 |
-n | cache_admin_menu            |          1 |
-n | cache_block                 |          0 |
-n | cache_content               |         11 |
-n | cache_filter                |          8 |
-n | cache_form                  |          0 |
-n | cache_location              |          3 |
-n | cache_menu                  |         74 |
-n | cache_page                  |          0 |
-n | cache_rules                 |          3 |
-n | cache_tax_image             |          0 |
-n | cache_update                |          1 |
-n | cache_views                 |         19 |
-n | cache_views_data            |          0 |
-n | captcha_points              |          8 |
-n | captcha_sessions            |          0 |
-? | comments                    |          3 | comments
-? | contact                     |          6 | widgets / contact form
-y | content_field_competition   |        406 | noderef 
-| content_field_image         |         50 |
-| content_field_ntps          |        187 |
-| content_field_photo         |         82 |
-| content_field_player        |       1175 |
-| content_field_runnerup      |        684 |
-| content_field_third         |        684 |
-| content_field_winner        |        684 |
-| content_group               |          2 |
-| content_group_fields        |         10 |
-| content_node_field          |         27 |
-| content_node_field_instance |         33 |
-| content_type_competitor     |          0 |
-| content_type_competitors    |         35 |
-| content_type_course         |         31 |
-| content_type_event          |        171 |
-| content_type_player         |         81 |
-| content_type_profile        |          0 |
-| content_type_result         |        352 |
-| content_type_trophy         |         19 |
-| ctools_css_cache            |          0 |
-| ctools_object_cache         |          0 |
-| date_format_locale          |          0 |
-| date_format_types           |          5 |
-| date_formats                |         37 |
-| devel_queries               |          0 |
-| devel_times                 |          0 |
-| fb_app                      |          1 |
-| fckeditor_role              |          3 |
-| fckeditor_settings          |          3 |
-| files                       |        108 |
-| filter_formats              |          2 |
-| filters                     |          8 |
-| flood                       |          0 |
-| forum                       |          0 |
-| gmap_taxonomy_node          |          0 |
-| gmap_taxonomy_term          |          0 |
-| history                     |          4 |
-| imagecache_action           |          2 |
-| imagecache_preset           |          2 |
-| imagemenu                   |          0 |
-| location                    |         31 |
-| location_instance           |         31 |
-| location_phone              |          7 |
-| location_search_work        |          0 |
-| menu_custom                 |          5 |
-| menu_links                  |       1081 |
-| menu_router                 |       1191 |
-y | node                        |        744 |
-| node_access                 |          1 |
-| node_comment_statistics     |        744 |
-| node_counter                |          0 |
-? | node_revisions              |        744 | same as node?
-| node_type                   |         15 |
-| nodewords                   |       3983 |
-| nodewords_custom            |          0 |
-| oauth_consumer              |          1 |
-| oauth_nonce                 |          0 |
-| oauth_token                 |          1 |
-| openid_association          |          0 |
-| openid_nonce                |          0 |
-| page_manager_handlers       |          1 |
-| page_manager_pages          |          0 |
-| page_manager_weights        |          0 |
-| page_title                  |          0 |
-| panels_display              |          1 |
-| panels_layout               |          1 |
-| panels_mini                 |          0 |
-| panels_node                 |          0 |
-| panels_pane                 |         12 |
-| panels_renderer_pipeline    |          0 |
-| path_redirect               |          0 |
-| permission                  |          3 |
-| poll                        |          0 |
-| poll_choices                |          0 |
-| poll_votes                  |          0 |
-| profile_fields              |          0 |
-| profile_values              |          0 |
-| role                        |          3 |
-| rules_rules                 |          2 |
-| rules_sets                  |          2 |
-| search_dataset              |        953 |
-| search_index                |      47056 |
-| search_node_links           |          2 |
-| search_total                |       7138 |
-| semaphore                   |          0 |
-| seo_checklist               |         51 |
-| seo_group                   |         12 |
-| sessions                    |         20 |
-n | simplenews_mail_spool       |          0 |
-| simplenews_newsletters      |        208 |
-? | simplenews_snid_tid         |         23 |
-? | simplenews_subscriptions    |         23 |
-? | site_verify                 |          3 |
-n | stylizer                    |          0 |
-n | system                      |        248 |
-n | taxonomy_menu               |          0 | 
-y | term_data                   |         21 | tid vid name desc weight
-y | term_hierarchy              |         21 | tid parent
-n | term_image                  |          0 |
-y | term_node                   |        556 | nid vid tid
-n | term_relation               |          0 |
-n | term_synonym                |          0 |
-| trigger_assignments         |          0 |
-| twitter                     |          0 |
-| twitter_account             |          0 |
-| upload                      |         21 |
-| url_alias                   |        817 |
-| users                       |         42 |
-| users_roles                 |          6 |
-? | variable                    |        654 | options
-| views_display               |         29 |
-| views_object_cache          |          4 |
-| views_view                  |          9 |
-y | vocabulary                  |          4 | terms
-y | vocabulary_node_types       |          8 |
-| watchdog                    |       1007 |
-| xmlsitemap                  |        806 |
-| xmlsitemap_node             |        744 |
-| xmlsitemap_taxonomy         |         21 |
-| xmlsitemap_user             |         41 |
-| xmlsitemap_user_role        |          0 |
-| zipcodes                    |          0 |
- | ----------------------------- | ------------ | 
-158 rows in set (1.10 sec)
+/**
+ * Register custom taxonomies
+ *
+ *
+ * vocabulary and vocabulary node types
+ *
+ * vocab |  vid | vocabulary node types |  relations |  hierarchy | multiple | required
+ * ----- | ---- | --------------------- | ---------- | ---------- | -------- | --------
+ * Newsletter | 2 | blog, event, simplenews, story | 0 | 1 | 0 | 0
+ * Forums | 1 | forum| 0 | 1 | 0 | 1
+ * Membership | 3 | player, profile | 1 | 1 | | 1
+ * Result | 4 | result | 1 | 1 | 0 | 1
+ */
+function tagsd2w_register_categories() {
+	//bw_register_custom_category( "forums", "Forums" );
+  //bw_register_custom_category( "newsletter", "Newsletter" );
+  bw_register_custom_category( "membership", null, "Membership" );
+	bw_register_custom_category( "result", null, "Result" );
+}
+
+/** 
+ * Register the custom post types for TAGS
+ *
+ * In the current system we have 744 nodes to migrate
+ *
+ * Seq ### | node_type | post_type
+ * --- | --------- | ------------
+ * 0 | 0 | competitor | 
+ * 0 | 0 | forum | 
+ * 0 | 0 | panel
+ * 0 | 0 | poll | 
+ * 0 | 0 | profile | 
+ * 1 | 1 | story	| posts 
+ * 1 | 42 | blog |	posts
+ * 1 | 6 | simplenews | posts
+ * 2 | 6 | page | pages 
+ * 3 | 19 | trophy	
+ * 4 | 31 | course |	course
+ * 5 | 81 | player	| players	/ users
+ * 6 | 171 | event | event
+ * 7 | 35 | competitors | competitors 		= link to event and players
+ * 8 | 352 | result | result
+ */
+
+function tagsd2w_register_post_types() {
+	// bw_register_post_type( "blog", $post_type_args );
+	// bw_register_post_type( "competitor", $post_type_args );
+	//tagsd2w_register_competitors()
+	tags_register_course();
+	//tagsd2w_register_trophy();
+	//tagsd2w_register_event();
+	//tagsd2w_register_result();
+	
+
+	//bw_register_post_type( "competitors", $post_type_args );
 
 
-vocabulary and vocabulary node types
+	//bw_register_post_type( "event", $post_type_args );
 
-vocab |  vid | vocabulary node types |  relations |  hierarchy | multiple | required
+	//bw_register_post_type( "forum", $post_type_args );
 
-Newsletter | 2 | blog, event, simplenews, story | 0 | 1 | 0 | 0
-Forums | 1 | forum| 0 | 1 | 0 | 1
-Membership | 3 | player, profile | 1 | 1 | | 1
-Result | 4 | result | 1 | 1 | 0 | 1
+	//bw_register_post_type( "page", $post_type_args );
 
-### | node_type | post_type
---- | --------- | ------------
-42 | blog |	posts
-0 | competitor | 
-35 | competitors | competitors
-31 | course |	course
-171 | event | event
-0 | forum | 
-6 | page | pages 
-0 | panel
-81 | player	| players
-0 | poll | 
-0 | profile | 
-352 | result | result
-6 | simplenews |
-1 | story	| 
-19 | trophy	
+	//bw_register_post_type( "panel", $post_type_args );
 
-Total 744
+	//bw_register_post_type( "player", $post_type_args );
+
+	///bw_register_post_type( "poll", $post_type_args );
+
+	//bw_register_post_type( "profile", $post_type_args );
+
+	//bw_register_post_type( "result", $post_type_args );
+
+	//bw_register_post_type( "simplenews", $post_type_args );
+
+	//bw_register_post_type( "story", $post_type_args );
+
+	//bw_register_post_type( "trophy", $post_type_args );
+
+}
+/**
+ *  Register a course 
+ * 
+ * A course is basically a location where an event takes place
+ * 
+ *
+ * Fields:
+ * - website URL 
+ * - Address: street, additional, city, province, post code
+ * - latitude & longitude
+ * - Photo
+ * 
+ * - Length: in yards
+ * - Par: 6x to 7x
+ * - Holes 9 / 18
+ * - ?
+ * 
+ 
+ */ 
+function tags_register_course() {
+	$post_type = "course";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Course';
+  $post_type_args['description'] = 'Location where an event takes place';
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author', 'publicize', 'home' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-location-alt';
+  bw_register_post_type( $post_type, $post_type_args );
+	
+	
+	
+  bw_register_field( "_url", "url", "Website" ); 
+  bw_register_field( "_address", "textarea", "Address" ); 
+	bw_register_field( "_post_code", "text", "Post Code" );
+	bw_register_field( "_lat", "numeric", "Latitude" );
+	bw_register_field( "_long", "numeric", "Longitude" );
+	
 
 
-batch migrate TAGS from Drupal to WordPress
-Migrate Categories and Tag definitions from vocabulary
-Migrate post_types from node_type
-Migrate taxonomies for post_types from vocabulary_node_types
-Migrate Category and Tags terms from term_node, term_data and term_hierarchy
-Define fields for any post type from content_node_field
-Register fields for object type from content_node_field_instance
-Migrate different bits of content in the correct order.
+}
+
+
+/**
+ *
+ */
+
+function td2w_run() {
+	oik_require( "includes\tagsd2w.php", "tagsd2w" );
+	td2w_lazy_run();
+	
+
+
+}
 
 
 
