@@ -112,11 +112,11 @@ function tags_register_categories() {
  *
  * Seq ### | node_type | post_type
  * --- | --------- | ------------
- * 0 | 0 | competitor | 
- * 0 | 0 | forum | 
- * 0 | 0 | panel
- * 0 | 0 | poll | 
- * 0 | 0 | profile | 
+ * 0 | 0 | competitor |  n/a
+ * 0 | 0 | forum | n/a 
+ * 0 | 0 | panel | n/a
+ * 0 | 0 | poll | n/a 
+ * 0 | 0 | profile | n/a
  * 1 | 1 | story	| posts 
  * 1 | 42 | blog |	posts
  * 1 | 6 | simplenews | posts
@@ -134,7 +134,7 @@ function tags_register_post_types() {
 	// bw_register_post_type( "competitor", $post_type_args );
 	//tags_register_competitors()
 	tags_register_course();
-	//tags_register_trophy();
+	tags_register_trophy();
 	//tags_register_event();
 	//tags_register_result();
 	
@@ -166,7 +166,7 @@ function tags_register_post_types() {
 
 }
 /**
- *  Register a course 
+ * Register a course 
  * 
  * A course is basically a location where an event takes place
  * 
@@ -190,12 +190,10 @@ function tags_register_course() {
   $post_type_args['label'] = 'Courses';
 	$post_type_args['singular_label'] = 'Course';
   $post_type_args['description'] = 'Location where an event takes place';
-  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author', 'publicize', 'home' );
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-location-alt';
   bw_register_post_type( $post_type, $post_type_args );
-	
-	
 	
   bw_register_field( "_url", "url", "Website" ); 
   bw_register_field( "_address", "textarea", "Address" ); 
@@ -208,9 +206,26 @@ function tags_register_course() {
 	bw_register_field_for_object_type( "_post_code", $post_type );
 	bw_register_field_for_object_type( "_lat", $post_type );
 	bw_register_field_for_object_type( "_long", $post_type );
-	
 
+}
 
+/**
+ * Register a trophy
+ *
+ * We used to play for quite a lot of trophies, now we only have a few.
+ * Don't really need excerpt.
+ * We could probably just make this an attachment with a category of Trophy
+ */
+function tags_register_trophy() {
+	$post_type = "trophy";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Trophies';
+	$post_type_args['singular_label'] = 'Trophy';
+  $post_type_args['description'] = 'Trophy being played for';
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-shield-alt';
+  bw_register_post_type( $post_type, $post_type_args );
 }
 
 
@@ -221,9 +236,6 @@ function tags_register_course() {
 function td2w_run() {
 	oik_require( "includes\tagsd2w.php", "tags" );
 	td2w_lazy_run();
-	
-
-
 }
 
 
