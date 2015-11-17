@@ -2,8 +2,8 @@
 
 /*
 Plugin Name: TAGS 
-Plugin URI: http://www.bobbingwide.com/oik-plugins/tagsd2w
-Description: Convert TAGS from Drupal to WordPress
+Plugin URI: http://www.bobbingwide.com/oik-plugins/tags
+Description: The Anchor Golf Society 
 Version: 0.0.1
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
@@ -31,14 +31,14 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 
-td2w_loaded();
+tags_loaded();
 
 /**
  * Function to invoke when plugin loaded
  *
  * Behave accordingly
  */
-function td2w_loaded() {
+function tags_loaded() {
 
 	if ( PHP_SAPI == "cli" ) {
 		if ( $_SERVER['argv'][0] == "boot-fs.php" )   {
@@ -55,14 +55,14 @@ function td2w_loaded() {
 		//echo PHP_SAPI;
 		//echo PHP_EOL;
 		if ( function_exists( "bw_trace2" ) ) {
-			bw_trace2( PHP_SAPI, "tagsd2w loaded in WordPress environment?" );
+			bw_trace2( PHP_SAPI, "tags loaded in WordPress environment?" );
 		}
 		if ( function_exists( "add_action" ) ) {
 			// if ( bw_is_wordpress() ) {
 			//add_action( "admin_notices", "oik_batch_activation" );
-			add_action( "oik_fields_loaded", "tagsd2w_oik_fields_loaded" );
-			add_action( "admin_menu", "tagsd2w_admin_menu" );
-			add_filter( 'set-screen-option', "tagsd2w_set_screen_option", 10, 3 );
+			add_action( "oik_fields_loaded", "tags_oik_fields_loaded" );
+			add_action( "admin_menu", "tags_admin_menu" );
+			add_filter( 'set-screen-option', "tags_set_screen_option", 10, 3 );
 		}
 	}
 	
@@ -72,7 +72,7 @@ function td2w_loaded() {
 /**
  * Implement an admin menu
  */
-function tagsd2w_admin_menu() {
+function tags_admin_menu() {
 
 
 }
@@ -80,9 +80,9 @@ function tagsd2w_admin_menu() {
 /**
  *
  */
-function tagsd2w_oik_fields_loaded() {
-	tagsd2w_register_categories();
-	tagsd2w_register_post_types();
+function tags_oik_fields_loaded() {
+	tags_register_categories();
+	tags_register_post_types();
 }
 
 /**
@@ -98,7 +98,7 @@ function tagsd2w_oik_fields_loaded() {
  * Membership | 3 | player, profile | 1 | 1 | | 1
  * Result | 4 | result | 1 | 1 | 0 | 1
  */
-function tagsd2w_register_categories() {
+function tags_register_categories() {
 	//bw_register_custom_category( "forums", "Forums" );
   //bw_register_custom_category( "newsletter", "Newsletter" );
   bw_register_custom_category( "membership", null, "Membership" );
@@ -129,14 +129,14 @@ function tagsd2w_register_categories() {
  * 8 | 352 | result | result
  */
 
-function tagsd2w_register_post_types() {
+function tags_register_post_types() {
 	// bw_register_post_type( "blog", $post_type_args );
 	// bw_register_post_type( "competitor", $post_type_args );
-	//tagsd2w_register_competitors()
+	//tags_register_competitors()
 	tags_register_course();
-	//tagsd2w_register_trophy();
-	//tagsd2w_register_event();
-	//tagsd2w_register_result();
+	//tags_register_trophy();
+	//tags_register_event();
+	//tags_register_result();
 	
 
 	//bw_register_post_type( "competitors", $post_type_args );
@@ -187,7 +187,8 @@ function tagsd2w_register_post_types() {
 function tags_register_course() {
 	$post_type = "course";
   $post_type_args = array();
-  $post_type_args['label'] = 'Course';
+  $post_type_args['label'] = 'Courses';
+	$post_type_args['singular_label'] = 'Course';
   $post_type_args['description'] = 'Location where an event takes place';
   $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author', 'publicize', 'home' );
   $post_type_args['has_archive'] = true;
@@ -202,17 +203,23 @@ function tags_register_course() {
 	bw_register_field( "_lat", "numeric", "Latitude" );
 	bw_register_field( "_long", "numeric", "Longitude" );
 	
+	bw_register_field_for_object_type( "_url", $post_type );
+	bw_register_field_for_object_type( "_address", $post_type );
+	bw_register_field_for_object_type( "_post_code", $post_type );
+	bw_register_field_for_object_type( "_lat", $post_type );
+	bw_register_field_for_object_type( "_long", $post_type );
+	
 
 
 }
 
 
 /**
+ * Run the migration from Drupal to WordPress
  *
  */
-
 function td2w_run() {
-	oik_require( "includes\tagsd2w.php", "tagsd2w" );
+	oik_require( "includes\tagsd2w.php", "tags" );
 	td2w_lazy_run();
 	
 
