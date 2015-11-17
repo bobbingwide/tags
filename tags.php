@@ -47,24 +47,29 @@ function tags_loaded() {
 			//oik_require_lib( "oik-cli" );
 			oik_batch_load_cli_functions();
 			if ( oik_batch_run_me( __FILE__ ) ) {
-				td2w_run();
+				//td2w_run();
 				echo "End cli:" . __FUNCTION__ . PHP_EOL; 
 			}
 		}
 	} else {
+	 
+		
 		//echo PHP_SAPI;
 		//echo PHP_EOL;
 		if ( function_exists( "bw_trace2" ) ) {
 			bw_trace2( PHP_SAPI, "tags loaded in WordPress environment?" );
 		}
-		if ( function_exists( "add_action" ) ) {
-			// if ( bw_is_wordpress() ) {
-			//add_action( "admin_notices", "oik_batch_activation" );
-			add_action( "oik_fields_loaded", "tags_oik_fields_loaded" );
-			add_action( "admin_menu", "tags_admin_menu" );
-			add_filter( 'set-screen-option', "tags_set_screen_option", 10, 3 );
-		}
+	}	
+	
+	if ( function_exists( "add_action" ) ) {
+		// if ( bw_is_wordpress() ) {
+		//add_action( "admin_notices", "oik_batch_activation" );
+		add_action( "oik_fields_loaded", "tags_oik_fields_loaded" );
+		add_action( "admin_menu", "tags_admin_menu" );
+		add_filter( 'set-screen-option', "tags_set_screen_option", 10, 3 );
+		add_action( 'run_tags.php', "td2w_run" );
 	}
+	
 	
 
 }
@@ -135,8 +140,9 @@ function tags_register_post_types() {
 	//tags_register_competitors()
 	tags_register_course();
 	tags_register_trophy();
-	//tags_register_event();
-	//tags_register_result();
+	tags_register_player();
+	tags_register_event();
+	tags_register_result();
 	
 
 	//bw_register_post_type( "competitors", $post_type_args );
@@ -200,12 +206,14 @@ function tags_register_course() {
 	bw_register_field( "_post_code", "text", "Post Code" );
 	bw_register_field( "_lat", "numeric", "Latitude" );
 	bw_register_field( "_long", "numeric", "Longitude" );
+	bw_register_field( "_nid", "numeric", "Original node ID" );
 	
 	bw_register_field_for_object_type( "_url", $post_type );
 	bw_register_field_for_object_type( "_address", $post_type );
 	bw_register_field_for_object_type( "_post_code", $post_type );
 	bw_register_field_for_object_type( "_lat", $post_type );
 	bw_register_field_for_object_type( "_long", $post_type );
+	bw_register_field_for_object_type( "_nid", $post_type );
 
 }
 
@@ -226,6 +234,114 @@ function tags_register_trophy() {
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-shield-alt';
   bw_register_post_type( $post_type, $post_type_args );
+	bw_register_field_for_object_type( "_nid", $post_type );
+}
+
+/**
+ * Register an event
+ *
+ * Fields from 'content_type_event'
+ *
+ * field_trophy_nid -> _trophy
+ * field_course_nid -> _course
+ * 
+ */
+function tags_register_event() { 
+	$post_type = "event";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Events';
+  $post_type_args['description'] = 'Event - competition or meeting';
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-flag';
+  bw_register_post_type( $post_type, $post_type_args );
+	
+  bw_register_field( "_course", "noderef", "Course", array( "type" => "course" ) ); 
+	bw_register_field( "_date", "date", "Date" );
+	bw_register_field( "_tee_time", "time", "First tee" );
+	bw_register_field( "_cost", "currency", "Cost" );
+  bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy" ) ); 
+	bw_register_field( "_shirt", "select", "Shirt colour" );
+	bw_register_field( "_players", "noderef", "Players", array( "type" => "player" ) );
+	
+	bw_register_field_for_object_type( "_course", $post_type );
+	bw_register_field_for_object_type( "_date", $post_type );
+	bw_register_field_for_object_type( "_tee_time", $post_type );
+	bw_register_field_for_object_type( "_cost", $post_type );
+	bw_register_field_for_object_type( "_trophy", $post_type );
+	bw_register_field_for_object_type( "_shirt", $post_type );
+	bw_register_field_for_object_type( "_players", $post_type );
+	
+	bw_register_field_for_object_type( "_nid", $post_type );
+	
+}
+
+/**
+ * Register the result post type
+ 
+ * Fields from 'content_type_result'
+ *
+ * _event - single select
+ * _player - single select
+ * _details - text field . e.g. actual result, number birdies, which hole for NTP
+ * Uses custom taxonomy - result 
+ */
+function tags_register_result() {
+
+	$post_type = "result";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Results';
+  $post_type_args['description'] = 'Result of an event';
+  $post_type_args['supports'] = array( 'title', 'home', 'publicize' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-awards';
+	$post_type_args['taxonomies'] = array( "result" );
+  bw_register_post_type( $post_type, $post_type_args );
+	
+	bw_register_field( "_event", "noderef", "Event", array( "type" => "event" ) );
+	bw_register_field( "_player", "noderef", "Player", array( "type" => "player" ) );
+	bw_register_field( "_details", "text", "Details" );
+	
+	bw_register_field_for_object_type( "_event", $post_type ); 
+	bw_register_field_for_object_type( "_player", $post_type );
+	bw_register_field_for_object_type( "_details", $post_type );
+
+}
+
+/**
+ * Register the player post type
+ *
+ * We keep players separate from users since we have players who will never be users of the site
+ * So each player has an optional userref.
+ *
+ * We can either import the fields from content_type_player ( _woods, _irons, _putter, _ball ) into the main content.
+ * or create fields
+ *
+ 
+ */
+function tags_register_player() {
+	//oik_require( "includes/tags-users.php", "tags" );
+	//tagu_lazy_register_players();
+	$post_type = "player";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Players';
+  $post_type_args['description'] = 'Player at an event';
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-admin-users';
+	$post_type_args['taxonomies'] = array( "membership" );
+  bw_register_post_type( $post_type, $post_type_args );
+	
+	bw_register_field( "_user", "userref", "User" );
+	bw_register_field( "_handicap", "numeric", "Handicap" );
+	bw_register_field( "_uid", "numeric", "Original user ID" );
+	//bw_register_field( "_clubs"
+	
+	bw_register_field_for_object_type( "_user", $post_type );
+	bw_register_field_for_object_type( "_handicap", $post_type );
+	bw_register_field_for_object_type( "_nid", $post_type );
+	bw_register_field_for_object_type( "_uid", $post_type );
+
 }
 
 
@@ -234,7 +350,9 @@ function tags_register_trophy() {
  *
  */
 function td2w_run() {
-	oik_require( "includes\tagsd2w.php", "tags" );
+	//do_action( "init" );
+	tags_oik_fields_loaded();
+	oik_require( "includes/tagsd2w.php", "tags" );
 	td2w_lazy_run();
 }
 

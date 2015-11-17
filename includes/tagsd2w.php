@@ -3,9 +3,9 @@
 /**
  * batch migrate TAGS from Drupal to WordPress
  *
- * - Migrate Categories and Tag definitions from vocabulary
- * - Migrate post_types from node_type
- * - Migrate taxonomies for post_types from vocabulary_node_types
+ * - Migrate Categories and Tag definitions from vocabulary	- see the main routine ( tags.php )
+ * - Migrate post_types from node_type - see the main routine ( tags.php )
+ * - Migrate taxonomies for post_types from vocabulary_node_types	- see the main routine ( tags.php )
  * - Migrate Category and Tags terms from term_node, term_data and term_hierarchy
  * - Define fields for any post type from content_node_field
  * - Register fields for object type from content_node_field_instance
@@ -18,12 +18,27 @@ function td2w_lazy_run() {
 	$count++;
 	echo "Running td2w_lazy_run: $count" . PHP_EOL ;
 	
-	oik_require( "includes\class-td2w-terms.php", "tagsd2w" );
+	oik_require( "includes/class-td2w-terms.php", "tags" );
 	$terms = new TD2W_terms();
-	$terms->migrate();
+	//$terms->migrate();
 	
-	$courses = new TD2W_courses();
-	$courses->migrate();
+	//oik_require( "includes/class-td2w-files.php", "tags" );
+	//$files = new TD2W_files();
+	
+	//oik_require( "includes/class-td2w-courses.php", "tags" );
+  //$courses = new TD2W_courses();
+	
+	//oik_require( "includes/class-td2w-trophies.php", "tags" );
+  // $trophies = new TD2W_trophies();
+	
+	oik_require( "includes/class-td2w-users.php", "tags" );
+	$users = new TD2W_users();
+	
+	oik_require( "includes/class-td2w-players.php", "tags" );
+	$players = new TD2W_players( $users );
+	// tags_register_player();
+	// tags_register_event();
+	// tags_register_result();
 	
 	
 
