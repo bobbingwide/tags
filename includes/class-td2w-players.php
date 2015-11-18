@@ -12,11 +12,13 @@ class TD2W_players {
 	
 	public $users;
 	public $terms;
+	public $files; 
 	
 	
-	function __construct( $users, $terms ) {
+	function __construct( $users, $terms, $files ) {
 		$this->users = $users;
 		$this->terms = $terms;
+		$this->files = $files;
 		print_r( $this->users );
 		$this->players = array();
 		$this->load_players();
@@ -48,6 +50,7 @@ class TD2W_players {
 				//$this->update_course( $result, $id );
 			}
 			$this->update_terms( $result, $id );
+			$this->set_featured_image( $id, $result );
 			$this->players[ $result->uid ] = $id;
 			
 		}
@@ -125,6 +128,31 @@ class TD2W_players {
 			$terms[] = $target_term;
 		}
 		wp_set_post_terms( $id, $terms, "membership" );
+	
+	}
+	
+	function set_featured_image( $id, $result ) {
+		$featured = $this->get_featured_image( $result );
+		$featured_image = $this->files->map( $featured->field_photo_fid );
+		echo "ID: $id, featured: $featured_image" . PHP_EOL;
+		update_post_meta( $id, "_thumbnail_id", $featured_image );
+		//gob();
+		
+	
+	}
+	
+	function get_featured_image( $result ) {
+		global $wpdb;
+		$nid = $result->nid;
+		
+		$request =  "select field_photo_fid from content_field_photo where nid = $nid  ";
+		$results = $wpdb->get_results( $request );
+	 	print_r( $results );
+		if ( $results ) {
+			$result = $results[0];
+		}
+		//gob();
+		return( $result );
 	
 	}
 	
