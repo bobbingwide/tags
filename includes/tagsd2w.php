@@ -20,25 +20,28 @@ function td2w_lazy_run() {
 	
 	oik_require( "includes/class-td2w-terms.php", "tags" );
 	$terms = new TD2W_terms();
-	//$terms->migrate();
 	
-	//oik_require( "includes/class-td2w-files.php", "tags" );
-	//$files = new TD2W_files();
+	oik_require( "includes/class-td2w-files.php", "tags" );
+	$files = new TD2W_files();
 	
-	//oik_require( "includes/class-td2w-courses.php", "tags" );
-  //$courses = new TD2W_courses();
+	oik_require( "includes/class-td2w-courses.php", "tags" );
+  $courses = new TD2W_courses( $files );
 	
-	//oik_require( "includes/class-td2w-trophies.php", "tags" );
-  // $trophies = new TD2W_trophies();
+	oik_require( "includes/class-td2w-trophies.php", "tags" );
+  $trophies = new TD2W_trophies();
 	
 	oik_require( "includes/class-td2w-users.php", "tags" );
 	$users = new TD2W_users();
 	
 	oik_require( "includes/class-td2w-players.php", "tags" );
-	$players = new TD2W_players( $users, $terms );
-	// tags_register_player();
-	// tags_register_event();
-	// tags_register_result();
+	$players = new TD2W_players( $users, $terms, $files );
+	
+	oik_require( "includes/class-td2w-events.php", "tags" );
+	$events = new TD2W_events( $courses, $trophies );
+	
+	//oik_require( "includes/class-td2w-competitors.php", "tags" );
+	//oik_require( "includes/class-td2w-results.php", "tags" );
+	
 	
 	
 
@@ -48,6 +51,7 @@ function td2w_lazy_run() {
 
 /**
  *
+ * select table_name, table_rows from information_schema.tables where table_schema = "tags"
 
 y/n | table_name                  | table_rows | target
 -| ----------------------------- | ------------ | ------ 
@@ -86,25 +90,25 @@ n | captcha_points              |          8 |
 n | captcha_sessions            |          0 |
 ? | comments                    |          3 | comments
 ? | contact                     |          6 | widgets / contact form
-y | content_field_competition   |        406 | noderef 
-| content_field_image         |         50 |
-| content_field_ntps          |        187 |
-| content_field_photo         |         82 |
-| content_field_player        |       1175 |
-| content_field_runnerup      |        684 |
-| content_field_third         |        684 |
-| content_field_winner        |        684 |
+y | content_field_competition   |        896 | noderef 
+| content_field_image         |         60 |
+| content_field_ntps          |        323 |
+| content_field_photo         |         109 |
+| content_field_player        |       3171 |
+| content_field_runnerup      |        948|
+| content_field_third         |        948 |
+| content_field_winner        |        948 |
 | content_group               |          2 |
 | content_group_fields        |         10 |
 | content_node_field          |         27 |
 | content_node_field_instance |         33 |
 | content_type_competitor     |          0 |
-| content_type_competitors    |         35 |
-y | content_type_course         |         31 | field_website_url, field_website_title
-| content_type_event          |        171 |
-| content_type_player         |         81 |
+| content_type_competitors    |         93 |
+y | content_type_course         |         41 | field_website_url, field_website_title
+| content_type_event          |        237 |
+| content_type_player         |         108 |
 | content_type_profile        |          0 |
-| content_type_result         |        352 |
+| content_type_result         |        784 |
 | content_type_trophy         |         19 |
 | ctools_css_cache            |          0 |
 | ctools_object_cache         |          0 |
@@ -116,7 +120,7 @@ y | content_type_course         |         31 | field_website_url, field_website_
 | fb_app                      |          1 |
 | fckeditor_role              |          3 |
 | fckeditor_settings          |          3 |
-| files                       |        108 |
+| files                       |        129 |
 | filter_formats              |          2 |
 | filters                     |          8 |
 | flood                       |          0 |
