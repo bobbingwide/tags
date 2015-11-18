@@ -26,10 +26,10 @@ class TD2W_files {
 	
 	function load_files() { 
     global $wpdb;
-		$request =  "select fid, filename, timestamp from files order by fid ";
+		$request =  "select fid, filename, filepath, filemime, timestamp from files order by fid ";
 		$results = $wpdb->get_results( $request );
 	 	$this->results = $results;
-		print_r( $results );
+		//print_r( $results );
 	}
 	
 	function report() {
@@ -42,6 +42,7 @@ class TD2W_files {
 			if ( !$id ) {
 				$id = $this->create_attachment( $result );
 			}
+			update_post_meta( $id, "_nid", $result->fid );
 			$this->files[ $result->fid ] = $id;
 		}
 	}
@@ -51,8 +52,8 @@ class TD2W_files {
 	
 		$atts = array( "post_type" => "attachment"
 								 , "post_parent" => 0
-								 , "meta_key" => "_wp_attached_file"
-								 , "meta_value" => "2015/11/" . $result->filename
+								 , "meta_key" => "_nid"
+								 , "meta_value" => $result->fid
 								 );
 		$posts = bw_get_posts( $atts ); 
 		if ( $posts ) {
@@ -93,7 +94,7 @@ Array
 		require_once(ABSPATH . 'wp-admin/includes/media.php');
 		
 		$filename = $result->filename;
-		$full_name = "c:/apache/htdocs/tags/sites/default/files/" . $filename;
+		$full_name = "c:/apache/htdocs/tags/" . $result->filepath;
 		$tmp_name = wp_tempnam( $filename );
 		copy ( $full_name, $tmp_name );
 		$file_array = array( "name" => $filename 
