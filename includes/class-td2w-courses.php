@@ -21,12 +21,15 @@ class TD2W_courses {
 	
 	private $results;
 	
+	private $files;
 	
-	function __construct() {
+	
+	function __construct( $files ) {
+		$this->files = $files;
 		$this->courses = array();
 		$this->load_courses();
 		$this->process_courses();
-		$this->report();
+		//$this->report();
 	}
 	
 	function load_courses() { 
@@ -34,7 +37,7 @@ class TD2W_courses {
 		$request =  "select n.nid nid, n.title, c.field_website_url from node n, content_type_course c where n.type = 'course' and n.vid = c.vid  ";
 		$results = $wpdb->get_results( $request );
 	 	$this->results = $results;
-		print_r( $results );
+		//print_r( $results );
 	}
 	
 	function report() {
@@ -50,6 +53,7 @@ class TD2W_courses {
 				$this->update_course( $result, $id );
 			}
 			$this->set_fields( $id, $result );
+			$this->set_featured_image( $id, $result );
 			$this->courses[ $result->nid ] = $id;
 			
 		}
@@ -125,7 +129,7 @@ class TD2W_courses {
 	function set_fields( $id, $result ) {
 	
 		$location = $this->get_location( $result );
-		print_r( $location );
+		//print_r( $location );
 		//$_POST["_address" ] =
 		//$_POST["_post_code"] = $location->postal_code;
 		$address = array();
@@ -140,6 +144,29 @@ class TD2W_courses {
 		update_post_meta( $id, "_lat", $location->latitude );
 		update_post_meta( $id, "_long", $location->longitude ); 
 		
+	
+	}
+	
+	function set_featured_image( $id, $result ) {
+		$featured = $this->get_featured_image( $result );
+		$featured_image = $this->files->map( $featured->field_image_fid );
+		echo "ID: $id, featured: $featured_image" . PHP_EOL;
+		update_post_meta( $id, "_thumbnail_id", $featured_image );
+		
+	
+	}
+	
+	function get_featured_image( $result ) {
+		global $wpdb;
+		$nid = $result->nid;
+		
+		$request =  "select field_image_fid from content_field_image where nid = $nid  ";
+		$results = $wpdb->get_results( $request );
+	 	print_r( $results );
+		if ( $results ) {
+			$result = $results[0];
+		}
+		return( $result );
 	
 	}
 	
