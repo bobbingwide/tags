@@ -11,10 +11,12 @@ class TD2W_players {
 	private $results;
 	
 	public $users;
+	public $terms;
 	
 	
-	function __construct( $users ) {
+	function __construct( $users, $terms ) {
 		$this->users = $users;
+		$this->terms = $terms;
 		print_r( $this->users );
 		$this->players = array();
 		$this->load_players();
@@ -30,7 +32,7 @@ class TD2W_players {
 		$request .= " order by uid";
 		$results = $wpdb->get_results( $request );
 	 	$this->results = $results;
-		print_r( $results );
+		//print_r( $results );
 	}
 	
 	function report() {
@@ -45,6 +47,7 @@ class TD2W_players {
 			} else {
 				//$this->update_course( $result, $id );
 			}
+			$this->update_terms( $result, $id );
 			$this->players[ $result->uid ] = $id;
 			
 		}
@@ -107,6 +110,23 @@ class TD2W_players {
 	
 	
 	*/
+	function update_terms( $result, $id ) {
+	
+    global $wpdb;
+		$nid = $result->nid;
+		$request =  "select tid from term_node where nid = $nid";
+		$results = $wpdb->get_results( $request );
+		print_r( $results );
+		$terms = array();
+		foreach ( $results as $term ) {
+			$tid = $term->tid;
+			$target_term = $this->terms->map( $tid );
+			echo "ID: $id, target term: $target_term term: $tid" . PHP_EOL;
+			$terms[] = $target_term;
+		}
+		wp_set_post_terms( $id, $terms, "membership" );
+	
+	}
 	
 	
 

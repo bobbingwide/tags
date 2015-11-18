@@ -35,7 +35,7 @@ function td2w_lazy_run() {
 	$users = new TD2W_users();
 	
 	oik_require( "includes/class-td2w-players.php", "tags" );
-	$players = new TD2W_players( $users );
+	$players = new TD2W_players( $users, $terms );
 	// tags_register_player();
 	// tags_register_event();
 	// tags_register_result();
