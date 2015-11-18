@@ -41,7 +41,7 @@ class TD2W_terms {
 					$taxonomy = "membership";
 					break;
 				case 4: 
-					$taxonomy = "result";	
+					$taxonomy = "result_type";	
 					break;
 					
 				default: 
@@ -56,13 +56,13 @@ class TD2W_terms {
 									 
 				
 			$term	= wp_insert_term( $term, $taxonomy, $args );
-			//print_r( $output );
+			//print_r( $term );
 			if (  is_wp_error( $term ) ) {
 				//print_r( $term );
 				$id = $term->error_data[ 'term_exists'];
 				
 			} else {
-				$id = $term->term_id;
+				$id = $term['term_id'];
 			}
 			
 			$this->terms[ $result->tid ] = $id;
