@@ -162,7 +162,7 @@ class TD2W_courses {
 		
 		$request =  "select field_image_fid from content_field_image where nid = $nid  ";
 		$results = $wpdb->get_results( $request );
-	 	print_r( $results );
+	 	//print_r( $results );
 		if ( $results ) {
 			$result = $results[0];
 		}
