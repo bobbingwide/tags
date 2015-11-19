@@ -111,6 +111,8 @@ function tags_register_categories() {
   //bw_register_custom_category( "newsletter", "Newsletter" );
   bw_register_custom_category( "membership", null, "Membership" );
 	bw_register_custom_category( "result_type", null, "Result" );
+  $labels = array( "labels" => array( "singular_name" => __( "Status" ), "name" => __( "Statuses" ) ) );
+	bw_register_custom_category( "playing_status", null, $labels );
 }
 
 /** 
@@ -133,18 +135,17 @@ function tags_register_categories() {
  * 4 | 31 | course |	course
  * 5 | 81 | player	| players	/ users
  * 6 | 171 | event | event
- * 7 | 35 | competitors | competitors 		= link to event and players
+ * 7 | 35 | competitors | competitors 		= link to event and player
  * 8 | 352 | result | result
  */
 
 function tags_register_post_types() {
 	// bw_register_post_type( "blog", $post_type_args );
-	// bw_register_post_type( "competitor", $post_type_args );
-	//tags_register_competitors()
 	tags_register_course();
 	tags_register_trophy();
 	tags_register_player();
 	tags_register_event();
+	tags_register_competitor();
 	tags_register_result();
 	
 
@@ -266,7 +267,7 @@ function tags_register_event() {
   bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy", "#optional" => true ) ); 
 	bw_register_field( "_shirt", "text", "Shirt colour" );
 	bw_register_field( "_ntps", "select", "NTPs", array( "#multiple" => 18, '#options' => tags_holes() ) );
-	//bw_register_field( "_players", "noderef", "Players", array( "type" => "player" ) );
+	bw_register_field( "_notes", "textarea", "Notes" );
 	
 	bw_register_field_for_object_type( "_course", $post_type );
 	bw_register_field_for_object_type( "_date", $post_type );
@@ -275,7 +276,7 @@ function tags_register_event() {
 	bw_register_field_for_object_type( "_trophy", $post_type );
 	bw_register_field_for_object_type( "_shirt", $post_type );
 	bw_register_field_for_object_type( "_ntps", $post_type );
-	//bw_register_field_for_object_type( "_players", $post_type );
+	bw_register_field_for_object_type( "_notes", $post_type );
 	
 	bw_register_field_for_object_type( "_nid", $post_type );
 	
@@ -293,6 +294,30 @@ function tags_holes() {
 }
 
 /**
+ * Register the competitor post type
+ *
+ * _event
+ * _player
+ * playing_status - 
+ 
+ */
+function tags_register_competitor() {
+	$post_type = "competitor";
+  $post_type_args = array();
+  $post_type_args['label'] = 'Competitors';
+  $post_type_args['description'] = 'Competitor at an event';
+  $post_type_args['supports'] = array( 'title', 'editor', 'author', 'revisions' );
+  $post_type_args['has_archive'] = true;
+  $post_type_args['menu_icon'] = 'dashicons-tag';
+	$post_type_args['taxonomies'] = array( "playing_status" );
+	
+  bw_register_post_type( $post_type, $post_type_args );
+	bw_register_field_for_object_type( "_event", $post_type );
+	bw_register_field_for_object_type( "_player", $post_type );
+	bw_register_field_for_object_type( "_nid", $post_type );
+} 
+
+/**
  * Register the result post type
  
  * Fields from 'content_type_result'
@@ -300,7 +325,7 @@ function tags_holes() {
  * _event - single select
  * _player - single select
  * _details - text field . e.g. actual result, number birdies, which hole for NTP
- * Uses custom taxonomy - result 
+ * Uses custom taxonomy - result_type 
  */
 function tags_register_result() {
 
@@ -311,7 +336,7 @@ function tags_register_result() {
   $post_type_args['supports'] = array( 'title', 'home', 'publicize' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-awards';
-	$post_type_args['taxonomies'] = array( "result" );
+	$post_type_args['taxonomies'] = array( "result_type" );
   bw_register_post_type( $post_type, $post_type_args );
 	
 	bw_register_field( "_event", "noderef", "Event", array( "type" => "event" ) );
