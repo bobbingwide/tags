@@ -19,11 +19,11 @@ class TD2W_players {
 		$this->users = $users;
 		$this->terms = $terms;
 		$this->files = $files;
-		print_r( $this->users );
+		//print_r( $this->users );
 		$this->players = array();
 		$this->load_players();
 		$this->process_players();
-		$this->report();
+		//$this->report();
 	}
 	
 	function load_players() { 
@@ -119,7 +119,7 @@ class TD2W_players {
 		$nid = $result->nid;
 		$request =  "select tid from term_node where nid = $nid";
 		$results = $wpdb->get_results( $request );
-		print_r( $results );
+		//print_r( $results );
 		$terms = array();
 		foreach ( $results as $term ) {
 			$tid = $term->tid;
@@ -147,7 +147,7 @@ class TD2W_players {
 		
 		$request =  "select field_photo_fid from content_field_photo where nid = $nid  ";
 		$results = $wpdb->get_results( $request );
-	 	print_r( $results );
+	 	//print_r( $results );
 		if ( $results ) {
 			$result = $results[0];
 		}
