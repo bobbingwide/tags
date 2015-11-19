@@ -195,7 +195,7 @@ class TD2W_events {
 		
 		$request =  "select field_image_fid from content_field_image where nid = $nid  ";
 		$results = $wpdb->get_results( $request );
-	 	print_r( $results );
+	 	//print_r( $results );
 		if ( $results ) {
 			$result = $results[0];
 		}
@@ -203,19 +203,23 @@ class TD2W_events {
 	
 	}
 	
+	/**
+	 * Get the NTP holes
+	 */
 	function get_ntps( $result ) {
 		global $wpdb;
 		$nid = $result->nid;
-		$request =  "select field_ntps_value from content_field_ntps where nid = $nid ";
-		$results = $wpdb->get_results( $request );
+		$request =  "select field_ntps_value from content_field_ntps where nid = $nid and field_ntps_value is not null ";
+		$results = $wpdb->get_results( $request ); #
 		$ntps = array();
 		if ( count( $results ) ) {
+			//print_r( $results );
 			foreach ( $results as $result ) {
 				$ntps[] = $result->field_ntps_value;
 			}
+			//print_r( $ntps );
+			//gob();
 		}	
-		print_r( $ntps );
-		gob();
 		return( $ntps );
 	}
 		
