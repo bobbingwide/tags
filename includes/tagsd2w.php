@@ -39,7 +39,11 @@ function td2w_lazy_run() {
 	oik_require( "includes/class-td2w-events.php", "tags" );
 	$events = new TD2W_events( $courses, $trophies );
 	
-	//oik_require( "includes/class-td2w-competitors.php", "tags" );
+	oik_require( "includes/class-td2w-competitors.php", "tags" );
+	//$competitors = new TD2W_competitors( $events, $players );
+	
+	oik_require( "includes/class-td2w-results.php", "tags" );
+	$results = new TD2W_results( $terms, $events, $players );
 	//oik_require( "includes/class-td2w-results.php", "tags" );
 	
 	
