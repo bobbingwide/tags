@@ -45,11 +45,14 @@ class TD2W_competitors {
 	
 	private $uniqid; 
 	
+	private $event_id;
+	
 	
 	function __construct( $events, $players ) {
 		$this->events = $events;
 		$this->players = $players;
 		$this->uniqid = null;
+		$this->event_id = 0;
 		$this->competitors = array();
 		$this->load_competitors();
 		$this->process_competitors();
@@ -81,6 +84,7 @@ class TD2W_competitors {
 				$this->update_competitor( $result, $id );
 			}
 			wp_set_post_terms( $id, 29, "playing_status" );
+			$this->update_event( $result );
 			$this->competitors[ $result->nid ] = $id;
 			
 		}
@@ -144,6 +148,14 @@ class TD2W_competitors {
 		$_POST['_event'] = $this->events->map( $result->cid );
 		$_POST['_player'] = $this->players->map( $result->pid ); 
 		wp_update_post( $post );
+	}
+	
+	function update_event( $result ) {
+		$event_id =  $this->events->map( $result->cid );
+		if ( $event_id != $this->event_id ) {
+			$this->event_id = $event_id;
+      update_post_meta( $event_id, "_notes", $result->body );
+		}
 	}
 	
 	
