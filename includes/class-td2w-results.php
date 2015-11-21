@@ -35,6 +35,7 @@ class TD2W_results {
 		$this->events = $events;
 		$this->players = $players;
 		$this->results = array();
+		$this->empty_results();
 		$this->load_results();
 		$this->process_results();
 		//$this->report();
@@ -109,7 +110,6 @@ class TD2W_results {
 	function create_result( $result ) {
 		$content = $result->field_details_value;
 		$content .= " <!--more-->[bw_fields]";
-	
 		$post = array( "post_type" => "result" 
 								 , "post_title" => $result->title
 								 , "post_name" => $result->title
@@ -117,10 +117,9 @@ class TD2W_results {
 								 , "post_status" => "publish" 
 								 );
 		$_POST['_nid'] = $this->uniqid;
-		
 		$_POST['_event'] = $this->events->map( $result->cid );
 		$_POST['_player'] = $this->players->map( $result->pid ); 
-		
+		$_POST['_details'] = $result->field_details_value;
 		$id = wp_insert_post( $post, true );
 		return( $id );
 								
@@ -135,9 +134,9 @@ class TD2W_results {
 								);
 								
 		$_POST['_nid'] = $this->uniqid;
-		
 		$_POST['_event'] = $this->events->map( $result->cid );
 		$_POST['_player'] = $this->players->map( $result->pid ); 
+		$_POST['_details'] = $result->field_details_value;
 		wp_update_post( $post );
 	}
 	
@@ -151,6 +150,20 @@ class TD2W_results {
 		echo "ID: $id, target term: $target_term " . PHP_EOL;
 		wp_set_post_terms( $id, $target_term, "result_type" );
 	
+	}
+	
+	/**
+	 * We've created too many results so we need to delete them and start again
+	 * 
+	 */
+	function empty_results() {
+		$args = array( "post_type" => "result"
+								, "number_posts" => -1
+								);
+		$posts = bw_get_posts( $args );
+		foreach ( $posts as $post) {
+			wp_delete_post( $post->ID, true );
+		}
 	}
 		
 
