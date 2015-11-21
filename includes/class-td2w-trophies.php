@@ -3,17 +3,9 @@
 /**
  * Implement the mapping for trophies we're migrating 
  *
- * From  content_type_trophie
+ * From  content_type_trophies
  * content_field_image vid, nid, field_image_fid
  *
- * 
- 
-	
-  bw_register_field( "_url", "url", "Website" ); 
-  bw_register_field( "_address", "textarea", "Address" ); 
-	bw_register_field( "_post_code", "text", "Post Code" );
-	bw_register_field( "_lat", "numeric", "Latitude" );
-	bw_register_field( "_long", "numeric", "Longitude" );
  */
 class TD2W_trophies {
 
@@ -108,12 +100,6 @@ class TD2W_trophies {
 	
 	/**
 	 * Set the other fields for a trophy
-	 
-	 
-  bw_register_field( "_address", "textarea", "Address" ); 
-	bw_register_field( "_post_code", "text", "Post Code" );
-	bw_register_field( "_lat", "numeric", "Latitude" );
-	bw_register_field( "_long", "numeric", "Longitude" );
 	 */
 	
 	function set_fields( $id, $result ) {
