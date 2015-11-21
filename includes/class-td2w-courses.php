@@ -22,6 +22,9 @@ class TD2W_courses {
 	private $results;
 	
 	private $files;
+	private $content;
+	private $created;
+	private $changed;
 	
 	
 	function __construct( $files ) {
@@ -34,9 +37,12 @@ class TD2W_courses {
 	
 	function load_courses() { 
     global $wpdb;
-		$request =  "select n.nid nid, n.title, c.field_website_url from node n, content_type_course c where n.type = 'course' and n.vid = c.vid  ";
+		$request =  "select n.nid nid, n.title, n.created, n.changed, c.field_website_url, r.body ";
+		$request .= " from node n, content_type_course c, node_revisions r "; 
+		$request .= " where n.type = 'course' and n.vid = c.vid and n.nid = r.nid ";
 		$results = $wpdb->get_results( $request );
 	 	$this->results = $results;
+		//echo "Courses: " . PHP_EOL;
 		//print_r( $results );
 	}
 	
@@ -46,6 +52,7 @@ class TD2W_courses {
 	
 	function process_courses() {
 		foreach ( $this->results as $result ) {
+			$this->content( $result );
 			$id = $this->load_course( $result );
 			if ( !$id ) {
 				$id = $this->create_course( $result );
@@ -82,14 +89,25 @@ class TD2W_courses {
 		return( $id );
 	}
 	
+	function content( $result ) {
+		$content = $result->body;
+		$content .= "<!--more-->[bw_fields]";
+		$this->content = $content;
+		$this->created = bw_format_date( $result->created, "Y-m-d H:i:s" );
+		$this->changed = bw_format_date( $result->changed, "Y-m-d H:i:s" );
+	}
+	
+	
+	
 	
 	function create_course( $result ) {
-	
 		$post = array( "post_type" => "course" 
 								 , "post_title" => $result->title
 								 , "post_name" => $result->title
-								 , "post_content" => "[bw_fields featured]<!--more-->[bw_fields]"
-								 , "post_status" => "publish" 
+								 , "post_content" => $this->content
+								 , "post_date" => $this->created
+								 , "post_date_gmt" => $this->created
+								 , "post_modified_date" => $changed
 								 );
 		$_POST['_url'] = $result->field_website_url;
 		$_POST['_nid'] = $result->nid;
@@ -105,14 +123,14 @@ class TD2W_courses {
 	 */
 	function update_course( $result, $id ) {
 		$post = array( "ID" => $id
-		
-								 , "post_content" => "[bw_fields featured]<!--more-->[bw_fields]"
+								 , "post_content" => $this->content
+								 , "post_date" => $this->created
+								 , "post_date_gmt" => $this->created
+								 , "post_modified_date" => $this->changed
 								);
 								
 		$_POST['_url'] = $result->field_website_url;
 		$_POST['_nid'] = $result->nid;
-				
-		
 		wp_update_post( $post );
 	}
 	
