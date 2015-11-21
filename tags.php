@@ -118,7 +118,7 @@ function tags_register_categories() {
 /** 
  * Register the custom post types for TAGS
  *
- * In the current system we have 744 nodes to migrate
+ * In the current system we have 1378  nodes to migrate
  *
  * Seq ### | node_type | post_type
  * --- | --------- | ------------
@@ -128,15 +128,15 @@ function tags_register_categories() {
  * 0 | 0 | poll | n/a 
  * 0 | 0 | profile | n/a
  * 1 | 1 | story	| posts 
- * 1 | 42 | blog |	posts
+ * 1 | 83 | blog |	posts
  * 1 | 6 | simplenews | posts
  * 2 | 6 | page | pages 
  * 3 | 19 | trophy	
- * 4 | 31 | course |	course
- * 5 | 81 | player	| players	/ users
+ * 4 | 41 | course |	course
+ * 5 | 108 | player	| players	/ users
  * 6 | 171 | event | event
- * 7 | 35 | competitors | competitors 		= link to event and player
- * 8 | 352 | result | result
+ * 7 | 93 | competitors | competitors 		= link to event and player
+ * 8 | 784 | result | result
  */
 
 function tags_register_post_types() {
@@ -333,7 +333,7 @@ function tags_register_result() {
   $post_type_args = array();
   $post_type_args['label'] = 'Results';
   $post_type_args['description'] = 'Result of an event';
-  $post_type_args['supports'] = array( 'title', 'home', 'publicize' );
+  $post_type_args['supports'] = array( 'title', 'home', 'publicize' , 'editor'  );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-awards';
 	$post_type_args['taxonomies'] = array( "result_type" );
@@ -346,6 +346,8 @@ function tags_register_result() {
 	bw_register_field_for_object_type( "_event", $post_type ); 
 	bw_register_field_for_object_type( "_player", $post_type );
 	bw_register_field_for_object_type( "_details", $post_type );
+	
+	bw_register_field_for_object_type( "_nid", $post_type );
 
 }
 
@@ -395,6 +397,22 @@ function td2w_run() {
 	tags_oik_fields_loaded();
 	oik_require( "includes/tagsd2w.php", "tags" );
 	td2w_lazy_run();
+}
+
+/**
+ * The Event content display should consist of a number of sections or tabs
+ * to match how it was displayed in anchorgolf.co.uk
+ 
+ [bw_table post_type=competitor meta_key=_event fields=_player,playing_status meta_value=480 numberposts=-1 orderby=_player]
+
+[bw_table post_type=result meta_key=_event fields=result_type,_player,_details,ID meta_value=480 numberposts=-1 orderby=result_type]	
+
+*/														
+															
+															
+function tags_the_content( $content ) {
+	return( $the_content );
+
 }
 
 
