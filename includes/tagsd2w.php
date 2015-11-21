@@ -18,6 +18,11 @@ function td2w_lazy_run() {
 	$count++;
 	echo "Running td2w_lazy_run: $count" . PHP_EOL ;
 	
+	if ( false ) {
+	
+	oik_require( "includes/class-td2w-posts.php", "tags" );
+	$posts = new TD2W_posts();
+	
 	oik_require( "includes/class-td2w-terms.php", "tags" );
 	$terms = new TD2W_terms();
 	
@@ -40,14 +45,15 @@ function td2w_lazy_run() {
 	$events = new TD2W_events( $courses, $trophies );
 	
 	oik_require( "includes/class-td2w-competitors.php", "tags" );
-	//$competitors = new TD2W_competitors( $events, $players );
+	$competitors = new TD2W_competitors( $events, $players );
 	
 	oik_require( "includes/class-td2w-results.php", "tags" );
 	$results = new TD2W_results( $terms, $events, $players );
 	//oik_require( "includes/class-td2w-results.php", "tags" );
 	
-	
-	
+	}
+	oik_require( "includes/class-td2w-yoast.php", "tags" );
+	$yoasts = new TD2W_yoast();
 
 }
 
@@ -73,9 +79,9 @@ n | backup_migrate_destinations |          0 |
 n | backup_migrate_profiles     |          1 |
 n | backup_migrate_schedules    |          0 |
 n | batch                       |          0 | 
-? | blocks                      |         86 | widgets
+? | blocks                      |         86 | widgets - convert manually
 n | blocks_roles                |          0 | widgets
-n | boxes                       |          3 |
+? | boxes                       |          3 | text widgets - convert manually
 n | cache                       |         21 |
 n | cache_admin_menu            |          1 |
 n | cache_block                 |          0 |
