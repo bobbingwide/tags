@@ -65,9 +65,11 @@ function tags_loaded() {
 		// if ( bw_is_wordpress() ) {
 		//add_action( "admin_notices", "oik_batch_activation" );
 		add_action( "oik_fields_loaded", "tags_oik_fields_loaded" );
+		add_action( "oik_add_shortcodes", "tags_oik_add_shortcodes" );
 		add_action( "admin_menu", "tags_admin_menu" );
 		add_filter( 'set-screen-option', "tags_set_screen_option", 10, 3 );
 		add_action( 'run_tags.php', "td2w_run" );
+		add_action( 'the_content', "tags_the_content", 1, 1 );
 	}
 	
 	
@@ -83,12 +85,21 @@ function tags_admin_menu() {
 }
 
 /**
- *
+ * Implement "oik_fields_loaded" for TAGS to register CPTs
  */
 function tags_oik_fields_loaded() {
 	tags_register_categories();
 	tags_register_post_types();
 }
+
+/**	
+ * Implement "oik_add_shortcodes" for TAGS
+ */
+function tags_oik_add_shortcodes() {
+	bw_add_shortcode( "tags_events", "tags_events", oik_path( "shortcodes/tags-events.php", "tags"), false );
+}
+
+
 
 /**
  * Register custom taxonomies
@@ -118,7 +129,7 @@ function tags_register_categories() {
 /** 
  * Register the custom post types for TAGS
  *
- * In the current system we have 1378  nodes to migrate
+ * In the Drupal system we had 1378 nodes to migrate
  *
  * Seq ### | node_type | post_type
  * --- | --------- | ------------
@@ -135,45 +146,16 @@ function tags_register_categories() {
  * 4 | 41 | course |	course
  * 5 | 108 | player	| players	/ users
  * 6 | 171 | event | event
- * 7 | 93 | competitors | competitors 		= link to event and player
- * 8 | 784 | result | result
+ * 7 | 93 | competitors | expanded to competitor = linking a player to an event with a playing_status
+ * 8 | 784 | result | result = expanded so that there is only one player per result
  */
-
 function tags_register_post_types() {
-	// bw_register_post_type( "blog", $post_type_args );
 	tags_register_course();
 	tags_register_trophy();
 	tags_register_player();
 	tags_register_event();
 	tags_register_competitor();
 	tags_register_result();
-	
-
-	//bw_register_post_type( "competitors", $post_type_args );
-
-
-	//bw_register_post_type( "event", $post_type_args );
-
-	//bw_register_post_type( "forum", $post_type_args );
-
-	//bw_register_post_type( "page", $post_type_args );
-
-	//bw_register_post_type( "panel", $post_type_args );
-
-	//bw_register_post_type( "player", $post_type_args );
-
-	///bw_register_post_type( "poll", $post_type_args );
-
-	//bw_register_post_type( "profile", $post_type_args );
-
-	//bw_register_post_type( "result", $post_type_args );
-
-	//bw_register_post_type( "simplenews", $post_type_args );
-
-	//bw_register_post_type( "story", $post_type_args );
-
-	//bw_register_post_type( "trophy", $post_type_args );
-
 }
 /**
  * Register a course 
@@ -405,15 +387,90 @@ function td2w_run() {
  
  [bw_table post_type=competitor meta_key=_event fields=_player,playing_status meta_value=480 numberposts=-1 orderby=_player]
 
-[bw_table post_type=result meta_key=_event fields=result_type,_player,_details,ID meta_value=480 numberposts=-1 orderby=result_type]	
+[bw_table post_type=result meta_key=_event fields=result_type,_player,_details,ID meta_value=480 numberposts=-1 orderby=result_type] 
+
+ 
+	tags_register_competitor();
+	tags_register_result();
 
 */														
 															
 															
 function tags_the_content( $content ) {
-	return( $the_content );
-
+  global $post;
+  if ( $post ) {
+    switch ( $post->post_type ) {
+      case "event": 
+        $content = tags_the_post_event( $post, $content );
+        break;
+          
+      case "player":
+				$content = tags_the_post_player( $post, $content );
+				break;
+			
+			case "trophy": 
+        $content = tags_the_post_trophy( $post, $content ); 
+        break;
+				
+			case "course":
+				$content = tags_the_post_course( $post, $content );
+				break;	
+    }
+  }  
+  return( $content );
 }
+
+/**
+ * Add some Event content before 'the_content' filtering 
+ * 
+ * @param post $post
+ * @param string $content - the current content
+ * @return string - the updated content
+ */
+function tags_the_post_event( $post, $content ) {
+  if ( true || is_single() ) {
+    oik_require( "includes/tags-event-content.php", "tags" );
+    $content = tags_lazy_event_content( $post );
+  }
+	return( $content );
+}
+
+/**
+ * Add some Player content before 'the_content' filtering 
+ * 
+ * @param post $post
+ * @param string $content - the current content
+ * @return string - the updated content
+ */
+function tags_the_post_player( $post, $content ) {
+	if ( !is_user_logged_in() ) {
+		$content = str_replace( "[bw_fields]", "", $content );
+	}
+	return( $content );
+}
+
+/**
+ * Add some Trophy content before 'the_content' filtering 
+ * 
+ * @param post $post
+ * @param string $content - the current content
+ * @return string - the updated content
+ */
+function tags_the_post_trophy( $post, $content ) {
+	return( $content );
+}
+
+/**
+ * Add some Trophy content before 'the_content' filtering 
+ * 
+ * @param post $post
+ * @param string $content - the current content
+ * @return string - the updated content
+ */
+function tags_the_post_course( $post, $content ) {
+	return( $content );
+}
+
 
 
 
