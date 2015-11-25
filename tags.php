@@ -80,8 +80,8 @@ function tags_loaded() {
  * Implement an admin menu
  */
 function tags_admin_menu() {
-
-
+	oik_require( "admin/tags.php", "tags" );
+	tags_lazy_admin_menu();
 }
 
 /**
