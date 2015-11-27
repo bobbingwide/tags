@@ -13,7 +13,7 @@ function tags_lazy_results_admin_page() {
   oik_menu_header( "Results" );
 	$results = new TAGS_results();
   oik_box( null, "result_form", "Register results", array( $results, "results_form" ) );
-	oik_box( null, "add_result_form", "Additional results", array( $results, "add_result_form" ) );
+	//oik_box( null, "add_result_form", "Additional results", array( $results, "add_result_form" ) );
   oik_menu_footer();
 	bw_flush();
 }
