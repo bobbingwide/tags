@@ -20,6 +20,11 @@ class TAGS_results {
 	
 	private $terms;
 	
+	/* 
+	 * ID of the result we're updating
+	 */								
+	private $result_ID; 
+	
 	
 	/**
 	 * Constructor for TAGS_results
@@ -33,7 +38,7 @@ class TAGS_results {
 	 */
 	function results_form() {
 		$this->update_results();
-		$this->add_additional_result();
+		//$this->add_additional_result();
 		$this->display_results_table();
   }
 	
@@ -96,14 +101,20 @@ class TAGS_results {
 	
 	function display_results_rows() {
 		$results = $this->results;
+		stag( "table" );
 		if ( count( $results ) ) {
-			stag( "table" );
-			bw_tablerow( bw_as_array( "Result,Event,Player,Type,Details" ), "tr", "th" );
+			bw_tablerow( bw_as_array( "Result,Event,Type,Player,Details" ), "tr", "th" );
 			foreach ( $results as $result ) {
 				$result->display();
 			}
-			etag( "table" );
 		}
+		$this->display_new_rows();
+		etag( "table" );
+	}
+	
+	function display_new_rows() {
+		$new = new TAGS_result( null, $this );
+		$new->new_rows( 8 );
 	}
 	
 	
@@ -116,7 +127,6 @@ class TAGS_results {
 	 */
 	
 	function load_competitors() {
-	
 		if ( $this->get_event() ) {
 			$atts = array( "post_type" => "competitor"
 									 , "orderby" => "title"
@@ -127,15 +137,35 @@ class TAGS_results {
 									 );
 			$competitors = bw_get_posts( $atts );
 			p( "competitors:" . count( $competitors ) );
-			
-			$players = array();
-			foreach ( $competitors as $competitor ) {
-				$player = get_post_meta( $competitor->ID, "_player", true );
-				$players[ $player ] = get_the_title( $player );
+			if ( count( $competitors ) ) {
+				$players = array();
+				foreach ( $competitors as $competitor ) {
+					$player = get_post_meta( $competitor->ID, "_player", true );
+					$players[ $player ] = get_the_title( $player );
+				}
+			} else {
+				$players = $this->load_players();
 			}
 			$this->players = $players;
-			
 		}
+	}
+	
+	/**
+	 * Load a simple array of players
+	 *
+	 * Simpler than bw_load_noderef() ?
+	 */
+	function load_players( ) {
+		p( "No competitors... so loading players" );
+		$atts = array( "post_type" => "player"
+								 , "orderby" => "title"
+								 , "order" => "ASC"
+								 , "numberposts" => -1
+								 );
+		$players = bw_get_posts( $atts );
+		p( "players: " . count( $players ) );
+		$players = bw_post_array( $players );
+		return( $players );
 	}
 	
 	
@@ -195,13 +225,13 @@ class TAGS_results {
 	 */
 	function update_results() {
 		if ( $submit = bw_array_get( $_REQUEST, "_tags_update_results", null ) ) {
-			c( "Updating results?" );
+			p( "Updating results?" );
 			if ( $this->verify_nonce() ) {
-				c( "Nonce verified" );
+				p( "Nonce verified" );
 				$this->update_existing();
 				$this->add_players();
 			} else {
-				c( "Nonce not verified" );
+				p( "Nonce not verified" );
 			}
 		}
 			
@@ -234,9 +264,14 @@ class TAGS_results {
 	 
 	 */
 	function update_existing() {
-		$results = bw_array_get( $_REQUEST, "result", array() );
+		$results = bw_array_get( $_REQUEST, "result_type", array() );
 		foreach ( $results as $ID => $status ) {
-			gob();
+			p( "Updating: $ID ");
+			$this->result_ID = $ID;
+			//$result_type = bw_array_get( $_REQUEST["result_type"], $ID, null );
+			$player_ID = bw_array_get( $_REQUEST["player"], $ID, null );
+			$slug = $this->term_slug( $status );
+			$this->add_result( $player_ID, $slug );
 		}
 	}
 	
@@ -264,10 +299,17 @@ class TAGS_results {
 		return( $changed );
 	}
 	
+	/**
+	 * 
+	 */
 	function add_players() {
-		$players = bw_array_get( $_REQUEST, "player", array() );
-		foreach ( $players as $ID => $result->type ) {
-			gob();
+		$this->result_ID = 0;
+		$result_types = bw_array_get( $_REQUEST, "_result_type", array() );
+		foreach ( $result_types as $index => $result_type ) {
+			if ( $result_type <> "0" ) {
+				$ID = bw_array_get( $_REQUEST["_player"], $index, null );
+				$this->add_result( $ID, $result_type );
+			}
 		}
 	}
 	
@@ -277,14 +319,14 @@ class TAGS_results {
 	 * @TODO - Tidy events so that don't have to mess with -'s
 	 *
 	 * @param integer $ID the player ID
-	 * @param string $status the playing status to be created: yes, no, tbc
+	 * @param string $status the result_type: Winner, Runner Up, Third, etc
 	 */
 	function add_result( $ID, $status ) {
 		$event_title = $this->event->post_title;
 		$event_title = str_replace( "-", "&#8211;", $event_title );
 		$player = get_post( $ID );
 		$player_title = $player->post_title;
-		$result_type = $this->result_type( $status );
+		$result_type = $this->term_name( $status );
 		$metadesc = "$event_title - $result_type - $player_title";
 		$post = array( "post_type" => "result"
 								 , "post_title" => $metadesc
@@ -292,11 +334,15 @@ class TAGS_results {
 								 , "post_status" => "publish"
 								 , "post_content" => "<!--more-->[bw_fields]"
 								 );
+		if ( $this->result_ID ) {
+			$post["ID"] = $this->result_ID;
+		}
 		$_POST['_event'] = $this->event->ID ;
 		$_POST['_player'] = $player->ID; 
-		$_POST['_details'] = $this->details();
+		$_POST['_details'] = $this->details( $this->result_ID );
 		$id = wp_insert_post( $post, true );
-		wp_set_object_terms( $id, $status, "playing_status" );
+		p( "ID is now: $id ");
+		wp_set_object_terms( $id, $status, "result_type" );
 		update_post_meta( $id, "_yoast_wpseo_metadesc", $metadesc );
 		return( $id );
 	}
@@ -328,8 +374,11 @@ class TAGS_results {
 		bw_form();
 		$this->event_selector();
 		p( isubmit( "_tags_refresh_results", "Refresh",  null, "button-secondary" ) );
-		$this->display_results_rows();
-		$this->buttons();
+		if ( $this->event ) {
+
+			$this->display_results_rows();
+			$this->buttons();
+		}
 		etag( "form" );
 		bw_flush();
 
@@ -359,9 +408,9 @@ class TAGS_results {
 				p( "Nonce verified" );
 			 	$ID = bw_array_get( $_REQUEST, "player", null );
 				$status = bw_array_get( $_REQUEST, "_playing_status", null );
-				$slug = $this->term_slug( $status );
-				if ( $ID && $slug ) {
-					$this->add_result( $ID, $slug );
+				//$slug = $this->term_slug( $status );
+				if ( $ID && $status ) {
+					$this->add_result( $ID, $status );
 				}
 			} else {
 				p( "Nonce not verified" );
@@ -416,11 +465,24 @@ class TAGS_results {
 		return( $term->slug );
 	}
 	
+	function term_name( $status ) {
+		$term = get_term_by( "slug", $status, "result_type" );
+		bw_trace2( $term, "Term" );
+		return( $term->name );
+	}
+	
 	/**
 	 * Return the details for this result
 	 */ 
-	function details() {
-		$details = bw_array_get( $_REQUEST, "_details", null ); 
+	function details( $index ) {
+		if ( $this->result_ID ) {
+			$name = "details";
+		} else {
+			$name = "_details";
+		}
+		
+		$details = bw_array_get( $_REQUEST[ $name ], $index, null ); 
+		e( "Details: $details" );
 		return( $details );
 	}		
 
