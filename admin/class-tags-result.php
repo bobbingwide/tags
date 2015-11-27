@@ -90,9 +90,13 @@ class TAGS_result {
 	}
 	
 	
+	/**
+	 * Return a link to the result ID
+	 */
 	function ID() {
-	
-		return( $this->ID );		
+		$permalink = get_permalink( $this->ID );
+		$link = retlink( null, $permalink, $this->ID );
+		return( $link );		
 	}
 	
 	function player_ID() {
@@ -100,7 +104,9 @@ class TAGS_result {
 	}
 	 
 	function event() {
-		return( $this->event );
+		$permalink = get_permalink( $this->event );
+		$link = retlink( null, $permalink, $this->event );
+		return( $link );
 	}
 	
 	function checked() {

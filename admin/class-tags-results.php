@@ -270,8 +270,10 @@ class TAGS_results {
 			$this->result_ID = $ID;
 			//$result_type = bw_array_get( $_REQUEST["result_type"], $ID, null );
 			$player_ID = bw_array_get( $_REQUEST["player"], $ID, null );
-			$slug = $this->term_slug( $status );
-			$this->add_result( $player_ID, $slug );
+			//$slug = $this->term_slug( $status );
+			
+			$details = bw_array_get( $_REQUEST["details"], $ID, null ); 
+			$this->add_result( $player_ID, $status, $details );
 		}
 	}
 	
@@ -308,7 +310,9 @@ class TAGS_results {
 		foreach ( $result_types as $index => $result_type ) {
 			if ( $result_type <> "0" ) {
 				$ID = bw_array_get( $_REQUEST["_player"], $index, null );
-				$this->add_result( $ID, $result_type );
+				
+				$details = bw_array_get( $_REQUEST["_details"], $index, null ); 
+				$this->add_result( $ID, $result_type, $details );
 			}
 		}
 	}
@@ -320,8 +324,9 @@ class TAGS_results {
 	 *
 	 * @param integer $ID the player ID
 	 * @param string $status the result_type: Winner, Runner Up, Third, etc
+	 * @param string $details details of the result
 	 */
-	function add_result( $ID, $status ) {
+	function add_result( $ID, $status, $details ) {
 		$event_title = $this->event->post_title;
 		$event_title = str_replace( "-", "&#8211;", $event_title );
 		$player = get_post( $ID );
@@ -339,10 +344,11 @@ class TAGS_results {
 		}
 		$_POST['_event'] = $this->event->ID ;
 		$_POST['_player'] = $player->ID; 
-		$_POST['_details'] = $this->details( $this->result_ID );
+		$_POST['_details'] = $details;
 		$id = wp_insert_post( $post, true );
 		p( "ID is now: $id ");
-		wp_set_object_terms( $id, $status, "result_type" );
+		$slug = $this->term_slug( $status );
+		wp_set_object_terms( $id, $slug, "result_type" );
 		update_post_meta( $id, "_yoast_wpseo_metadesc", $metadesc );
 		return( $id );
 	}
@@ -397,53 +403,10 @@ class TAGS_results {
 	}
 	
 	/**
-	 * Add an additional player
-	 * 
-	 */
-	function add_additional_result() {
-	
-		if ( $submit = bw_array_get( $_REQUEST, "_tags_add_player", null ) ) {
-			p( "Adding additional player" );
-			if ( $this->verify_nonce() ) {
-				p( "Nonce verified" );
-			 	$ID = bw_array_get( $_REQUEST, "player", null );
-				$status = bw_array_get( $_REQUEST, "_playing_status", null );
-				//$slug = $this->term_slug( $status );
-				if ( $ID && $status ) {
-					$this->add_result( $ID, $status );
-				}
-			} else {
-				p( "Nonce not verified" );
-			}
-		}	
-		
-	}
-	
-	/**
-	 * Add an additional player (  result  )
+	 * Display a select list for Players
 	 *
-	 * Note: We use the same nonce field as for the player list
-	 * The user can only press one submit button
-	 * but could we programmatically submit both?
-	 *
+	 * @TODO Is this used?
 	 */
-	function add_result_form() {
-		if ( $this->event ) {
-			bw_form();
-			$this->event_selector();
-			$this->player_selector();
-			$this->result_type();
-			//$this->details_field();
-			p( isubmit( "_tags_add_player", "Add a player", null, "button-secondary" ) );
-			
-			e( wp_nonce_field( "_tags_update_results", "_tags_" . $this->event->ID, true, false ) );
-			etag( "form" );
-			bw_flush();
-		} else {
-			p( "Select an Event first" );
-		}	
-	}
-	
 	function player_selector() {
 		bw_form_field_noderef( "player", "", "Select the player", "", array( "#type" => array( "player") ));
 	}
@@ -466,22 +429,29 @@ class TAGS_results {
 	}
 	
 	function term_name( $status ) {
-		$term = get_term_by( "slug", $status, "result_type" );
+		$term = get_term( $status, "result_type" );
 		bw_trace2( $term, "Term" );
 		return( $term->name );
 	}
 	
 	/**
 	 * Return the details for this result
+	 *
+	 * @TODO Delete redundant
 	 */ 
-	function details( $index ) {
+	function details() {
+		gob();
+		static $index = 0;
 		if ( $this->result_ID ) {
 			$name = "details";
+			$access = $this->result_ID;
 		} else {
 			$name = "_details";
+			$index++;
 		}
 		
 		$details = bw_array_get( $_REQUEST[ $name ], $index, null ); 
+		bw_trace2();
 		e( "Details: $details" );
 		return( $details );
 	}		
