@@ -55,9 +55,12 @@ class TAGS_event_content extends TAGS_content {
 	
 	/**
 	 * Display the Results for the event
+	 * 
+	 * @TODO - Cannot actually order by result_type - WordPress ignores this. See TRAC #18616
+	 * so it orders by the date ASC - which is fine for stuff in the past
 	 */
 	function results() {
-		$content = sprintf( '[bw_table post_type=result meta_key=_event fields=result_type,_player,_details,ID meta_value=%s numberposts=-1 orderby=result_type]'
+		$content = sprintf( '[bw_table post_type=result meta_key=_event fields=result_type,_player,_details meta_value=%s numberposts=-1 orderby=result_type]'
 											, $this->post->ID
 											);
 		e( $content ); 
