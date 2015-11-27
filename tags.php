@@ -323,10 +323,13 @@ function tags_register_result() {
 	
 	bw_register_field( "_event", "noderef", "Event", array( "type" => "event" ) );
 	bw_register_field( "_player", "noderef", "Player", array( "type" => "player" ) );
+	// Not needed - this is done automatically when the Taxonomy is registered.
+	//bw_register_field( "result_type", "taxonomy", "Result type" );
 	bw_register_field( "_details", "text", "Details" );
 	
 	bw_register_field_for_object_type( "_event", $post_type ); 
 	bw_register_field_for_object_type( "_player", $post_type );
+	bw_register_field_for_object_type( "result_type", $post_type );
 	bw_register_field_for_object_type( "_details", $post_type );
 	
 	bw_register_field_for_object_type( "_nid", $post_type );
