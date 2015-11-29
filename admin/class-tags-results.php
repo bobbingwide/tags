@@ -61,6 +61,19 @@ class TAGS_results {
 		
 	}
 	
+	/** 
+	 * Return a WordPress time stamp representing the event date
+	 * 
+	 */
+	function event_date() {
+		$event_date = $this->event->post_date;
+		$_date = get_post_meta( $this->event->ID, "_date", true );
+		if ( $_date ) {
+			$event_date = $_date . substr( $event_date, 10 ); // yyyy-mm-dd 
+		}
+		return( $event_date );
+	}
+	
 	
 	/**
 	 * Load the known results for this event
@@ -332,12 +345,15 @@ class TAGS_results {
 		$player = get_post( $ID );
 		$player_title = $player->post_title;
 		$result_type = $this->term_name( $status );
+		$event_date = $this->event_date();
 		$metadesc = "$event_title - $result_type - $player_title";
 		$post = array( "post_type" => "result"
 								 , "post_title" => $metadesc
 								 , "post_name" => $metadesc
 								 , "post_status" => "publish"
 								 , "post_content" => "<!--more-->[bw_fields]"
+								 , "post_date" => $event_date
+								 , "post_date_gmt" => $event_date
 								 );
 		if ( $this->result_ID ) {
 			$post["ID"] = $this->result_ID;
