@@ -38,7 +38,12 @@ class TAGS_event_content extends TAGS_content {
 		return( $event_date <= time() );
 	}
 	
+	/**
+	 * Display the Details
+	 * 
+	 */
 	function details() {
+		e( $this->content );
 		e( "[bw_fields]" );
 	}
 	
