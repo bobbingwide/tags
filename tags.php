@@ -105,7 +105,7 @@ function tags_oik_add_shortcodes() {
  * Register custom taxonomies
  *
  * Note: It's probably not a good idea to have a post_type of 'result' and a custom taxonomy with the same name.
- * So using 'result_type' for the results taxonomy
+ * So using 'result_type' for the results taxonomy.
  *
  *
  * vocabulary and vocabulary node types
@@ -190,8 +190,8 @@ function tags_register_course() {
   bw_register_field( "_url", "url", "Website" ); 
   bw_register_field( "_address", "textarea", "Address" ); 
 	bw_register_field( "_post_code", "text", "Post Code" );
-	bw_register_field( "_lat", "numeric", "Latitude" );
-	bw_register_field( "_long", "numeric", "Longitude" );
+	bw_register_field( "_lat", "numeric", "Latitude", array( '#theme_null' => false, '#optional' => true ) );
+	bw_register_field( "_long", "numeric", "Longitude", array( '#theme_null' => false, '#optional' => true ) );
 	bw_register_field( "_nid", "numeric", "Original node ID", array( '#theme' => false ) );
 	
 	bw_register_field_for_object_type( "_url", $post_type );
@@ -244,11 +244,11 @@ function tags_register_event() {
 	
   bw_register_field( "_course", "noderef", "Course", array( "type" => "course", "#optional" => true ) ); 
 	bw_register_field( "_date", "date", "Date" );
-	bw_register_field( "_tee_time", "time", "First tee" );
+	bw_register_field( "_tee_time", "time", "First tee", array( '#theme_null' => false ) );
 	bw_register_field( "_cost", "currency", "Cost" );
-  bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy", "#optional" => true ) ); 
-	bw_register_field( "_shirt", "text", "Shirt colour" );
-	bw_register_field( "_ntps", "select", "NTPs", array( "#multiple" => 18, '#options' => tags_holes() ) );
+  bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy", "#optional" => true, '#theme_null' => false ) ); 
+	bw_register_field( "_shirt", "text", "Shirt colour", array( '#theme_null' => false ) );
+	bw_register_field( "_ntps", "select", "NTPs", array( "#multiple" => 18, '#options' => tags_holes(), '#theme_null' => false ) );
 	bw_register_field( "_notes", "textarea", "Notes" );
 	
 	bw_register_field_for_object_type( "_course", $post_type );
@@ -360,13 +360,14 @@ function tags_register_player() {
 	$post_type_args['taxonomies'] = array( "membership" );
   bw_register_post_type( $post_type, $post_type_args );
 	
-	bw_register_field( "_user", "userref", "User" );
-	bw_register_field( "_handicap", "numeric", "Handicap" );
+	bw_register_field( "_user", "userref", "User", array( '#theme_null' => false ) );
+	bw_register_field( "_handicap", "numeric", "Handicap", array( '#theme_null' => false ) );
 	bw_register_field( "_uid", "numeric", "Original user ID", array( '#theme' => false ) );
 	//bw_register_field( "_clubs"
 	
-	bw_register_field_for_object_type( "_user", $post_type );
+	bw_register_field_for_object_type( "membership", $post_type ); 
 	bw_register_field_for_object_type( "_handicap", $post_type );
+	bw_register_field_for_object_type( "_user", $post_type );
 	bw_register_field_for_object_type( "_nid", $post_type );
 	bw_register_field_for_object_type( "_uid", $post_type );
 
