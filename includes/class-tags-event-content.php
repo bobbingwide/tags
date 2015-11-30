@@ -49,13 +49,21 @@ class TAGS_event_content extends TAGS_content {
 	
 	/**
 	 * Display the players for the event
+	 *
+	 * We also want to display a count of the players by playing_status
+	 * Can we use bw_count to do this? - count posts grouping by taxonomy
 	 */
 	function players() {
 		//e( "[players]" );
 		$content = sprintf( "[bw_table post_type=competitor meta_key=_event fields=_player,playing_status meta_value=%s numberposts=-1 orderby=title]" 
 											, $this->post->ID
 											);
-		e( $content );										
+		e( $content ); 
+		$groups = sprintf( "[bw_group post_type=competitor meta_key=_event fields=_player,playing_status meta_value=%s numberposts=-1 field='playing_status']"
+										, $this->post->ID
+									  );#
+		e( $groups );									
+	  									
 	}
 	
 	/**
