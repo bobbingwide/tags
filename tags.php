@@ -194,6 +194,11 @@ function tags_register_course() {
 	bw_register_field( "_long", "numeric", "Longitude", array( '#theme_null' => false, '#optional' => true ) );
 	bw_register_field( "_nid", "numeric", "Original node ID", array( '#theme' => false ) );
 	
+	// Don't display this by default since the content may be nested
+	//bw_register_field_for_object_type( "featured", $post_type );
+	
+	bw_register_field_for_object_type( "googlemap", $post_type );
+	
 	bw_register_field_for_object_type( "_url", $post_type );
 	bw_register_field_for_object_type( "_address", $post_type );
 	bw_register_field_for_object_type( "_post_code", $post_type );
