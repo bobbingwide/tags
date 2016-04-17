@@ -35,13 +35,14 @@ function tags_event() {
 function tags_events( $atts=null, $content=null, $tag=null ) {
 	oik_require( "includes/bw_posts.inc" );
 	$attr = array( "post_type" => "event" 
-							 //, "posts_per_page" => 12
+							 //, "posts_per_page" => 20
 							 , "orderby" => "meta_value"
 							 , "order" => "DESC"
 							 , "meta_key" => "_date"
 							 , "meta_value" => 0
 							 , "meta_compare" => ">="
 							 , "exclude" => -1 
+							 , "numberposts" => -1
 							 );
 	oik_require( "shortcodes/oik-navi.php" );
 	$ret = bw_navi( $attr );
