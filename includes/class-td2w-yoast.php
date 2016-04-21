@@ -24,7 +24,7 @@ class TD2W_yoast {
 	}
 	
 	function process() {
-		//$this->seo_posts( "course" );
+		$this->seo_posts( "course" );
 		//$this->seo_posts( "page" );
 		//$this->seo_posts( "player" );
 		//$this->seo_posts( "post" );
