@@ -122,7 +122,7 @@ function tags_register_categories() {
   //bw_register_custom_category( "newsletter", "Newsletter" );
   bw_register_custom_category( "membership", null, "Membership" );
 	bw_register_custom_category( "result_type", null, "Result" );
-  $labels = array( "labels" => array( "singular_name" => __( "Status" ), "name" => __( "Statuses" ) ) );
+  $labels = array( "labels" => array( "singular_name" => __( "Status" ), "name" => __( "Playing?" ) ) );
 	bw_register_custom_category( "playing_status", null, $labels );
 }
 
