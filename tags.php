@@ -1,10 +1,10 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015, 2016
 
 /*
 Plugin Name: TAGS 
 Plugin URI: http://www.bobbingwide.com/oik-plugins/tags
 Description: The Anchor Golf Society 
-Version: 0.0.1
+Version: 0.0.2
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
 Text Domain: tags
@@ -12,7 +12,7 @@ Domain Path: /languages/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Copyright 2015 Bobbing Wide (email : herb@bobbingwide.com )
+    Copyright 2015,2016 Bobbing Wide (email : herb@bobbingwide.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -250,11 +250,11 @@ function tags_register_event() {
   bw_register_field( "_course", "noderef", "Course", array( "type" => "course", "#optional" => true ) ); 
 	bw_register_field( "_date", "date", "Date" );
 	bw_register_field( "_tee_time", "time", "First tee", array( '#theme_null' => false ) );
-	bw_register_field( "_cost", "currency", "Cost" );
+	bw_register_field( "_cost", "currency", "Cost", array( '#theme_null' => false ) );
   bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy", "#optional" => true, '#theme_null' => false ) ); 
 	bw_register_field( "_shirt", "text", "Shirt colour", array( '#theme_null' => false ) );
 	bw_register_field( "_ntps", "select", "NTPs", array( "#multiple" => 18, '#options' => tags_holes(), '#theme_null' => false ) );
-	bw_register_field( "_notes", "textarea", "Notes" );
+	bw_register_field( "_notes", "textarea", "Notes", array( '#theme_null' => false ) );
 	
 	bw_register_field_for_object_type( "_course", $post_type );
 	bw_register_field_for_object_type( "_date", $post_type );
