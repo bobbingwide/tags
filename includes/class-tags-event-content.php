@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015, 2016
 
 /**
  * Implement TAGS Event tab content enhancement
@@ -9,11 +9,19 @@ class TAGS_event_content extends TAGS_content {
 	function __construct( $post ) {
 		parent::__construct( $post );
 		$tabs = array();
-		if ( $this->event_passed() ) {
+		$event_passed = $this->event_passed();
+		if ( $event_passed && $this->query_results() ) {
 			$tabs[] = array( "results", "Results", array( $this, "results" ) );
 		}
-		$tabs[] = array( "players", "Players", array( $this, "players" ) );
-		$tabs[] = array( "details", "Details", array( $this, "details" ) );
+		if ( $event_passed ) {
+			$tabs[] = array( "details", "Details", array( $this, "details" ) );
+		}
+		if ( $this->query_players() ) {
+			$tabs[] = array( "players", "Players", array( $this, "players" ) );
+		}
+		if ( !$event_passed ) {
+			$tabs[] = array( "details", "Details", array( $this, "details" ) );
+		}
 		$tabs[] = array( "course", "Course", array( $this, "course" ) );
 		$this->set_tabs( $tabs );
 		$this->enhance_content(); 
@@ -67,6 +75,22 @@ class TAGS_event_content extends TAGS_content {
 	}
 	
 	/**
+	 * Query players 
+	 * 
+	 * @return array array of posts in the players
+	 */
+	function query_players() {
+		oik_require( "includes/bw_posts.inc" );
+		$atts = array( "post_type" => "competitor" 
+								 , "meta_key" => "_event"
+								 , "meta_value" => $this->post->ID
+								 , "numberposts" => -1
+								 );
+		$posts = bw_get_posts( $atts );
+		return( $posts );
+	}
+
+	/**
 	 * Display the Results for the event
 	 * 
 	 * @TODO - Cannot actually order by result_type - WordPress ignores this. See TRAC #18616
@@ -78,7 +102,23 @@ class TAGS_event_content extends TAGS_content {
 											);
 		e( $content ); 
 	}
-	
+
+	/**
+	 * Query results 
+	 * 
+	 * @return array array of posts in the results set
+	 */
+	function query_results() {
+		oik_require( "includes/bw_posts.inc" );
+		$atts = array( "post_type" => "result" 
+								 , "meta_key" => "_event"
+								 , "meta_value" => $this->post->ID
+								 , "numberposts" => -1
+								 );
+		$posts = bw_get_posts( $atts );
+		return( $posts );
+	}
+
 	/**
 	 * Display the Course
 	 */
@@ -90,9 +130,12 @@ class TAGS_event_content extends TAGS_content {
 	
 	/**
 	 * Display common information before the tabs
+	 * 
+	 * Note: Some of these fields may be defined with #theme_null = false, meaning they won't be
+	 * displayed if the content is not set. 
 	 */
 	function pre_tabs() {
-		e( "[bw_fields featured,_tee_time,_cost]" );
+		e( "[bw_fields featured,_tee_time,_cost,_notes]" );
 	}
 	
 

@@ -1,10 +1,13 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015, 2016
 
 /**
  * Enhance the content for an Event
  *
  * _date today or in the future - show players
  * _date today or in the past - show results
+ * 
+ * If there are no players nor results then we should display Details
+ * 
  *
  */
 function tags_lazy_event_content( $post ) {
