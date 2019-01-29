@@ -1,18 +1,18 @@
-<?php // (C) Copyright Bobbing Wide 2015, 2016
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /*
 Plugin Name: TAGS 
-Plugin URI: http://www.bobbingwide.com/oik-plugins/tags
+Plugin URI: https://www.bobbingwide.com/oik-plugins/tags
 Description: The Anchor Golf Society 
-Version: 0.0.2
+Version: 0.1.0
 Author: bobbingwide
-Author URI: http://www.oik-plugins.com/author/bobbingwide
+Author URI: https://www.oik-plugins.com/author/bobbingwide
 Text Domain: tags
 Domain Path: /languages/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Copyright 2015,2016 Bobbing Wide (email : herb@bobbingwide.com )
+    Copyright 2015-2019 Bobbing Wide (email : herb@bobbingwide.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -185,6 +185,7 @@ function tags_register_course() {
   $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-location-alt';
+  $post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
 	
   bw_register_field( "_url", "url", "Website" ); 
@@ -221,9 +222,10 @@ function tags_register_trophy() {
   $post_type_args['label'] = 'Trophies';
 	$post_type_args['singular_label'] = 'Trophy';
   $post_type_args['description'] = 'Trophy being played for';
-  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt' );
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-shield-alt';
+	$post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
 	bw_register_field_for_object_type( "_nid", $post_type );
 }
@@ -242,9 +244,10 @@ function tags_register_event() {
   $post_type_args = array();
   $post_type_args['label'] = 'Events';
   $post_type_args['description'] = 'Event - competition or meeting';
-  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author' );
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author', 'revisions' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-flag';
+	$post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
 	
   bw_register_field( "_course", "noderef", "Course", array( "type" => "course", "#optional" => true ) ); 
@@ -297,6 +300,7 @@ function tags_register_competitor() {
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-tag';
 	$post_type_args['taxonomies'] = array( "playing_status" );
+	$post_type_args['show_in_rest'] = true;
 	
   bw_register_post_type( $post_type, $post_type_args );
 	bw_register_field_for_object_type( "_event", $post_type );
@@ -320,10 +324,11 @@ function tags_register_result() {
   $post_type_args = array();
   $post_type_args['label'] = 'Results';
   $post_type_args['description'] = 'Result of an event';
-  $post_type_args['supports'] = array( 'title', 'home', 'publicize' , 'editor'  );
+  $post_type_args['supports'] = array( 'title', 'home', 'publicize' , 'editor', 'revisions' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-awards';
 	$post_type_args['taxonomies'] = array( "result_type" );
+	$post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
 	
 	bw_register_field( "_event", "noderef", "Event", array( "type" => "event" ) );
@@ -359,10 +364,11 @@ function tags_register_player() {
   $post_type_args = array();
   $post_type_args['label'] = 'Players';
   $post_type_args['description'] = 'Player at an event';
-  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author' );
+  $post_type_args['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'home', 'publicize', 'author', 'revisions' );
   $post_type_args['has_archive'] = true;
   $post_type_args['menu_icon'] = 'dashicons-admin-users';
 	$post_type_args['taxonomies'] = array( "membership" );
+	$post_type_args['show_in_rest'] = true;
   bw_register_post_type( $post_type, $post_type_args );
 	
 	bw_register_field( "_user", "userref", "User", array( '#theme_null' => false ) );
