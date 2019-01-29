@@ -1,11 +1,11 @@
 # tags 
 ![banner](https://raw.githubusercontent.com/bobbingwide/tags/master/assets/tags-banner-772x250.jpg)
 * Contributors: bobbingwide
-* Donate link: http://www.oik-plugins.com/oik/oik-donate/
+* Donate link: https://www.oik-plugins.com/oik/oik-donate/
 * Tags: CPTs, golf, events, players, results
-* Requires at least: 4.6
-* Tested up to: 4.7-beta4
-* Stable tag: 0.0.2
+* Requires at least: 4.9.8
+* Tested up to: 5.0.3
+* Stable tag: 0.1.0
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 ## Upgrade Notice 
+# 0.1.0 
+Upgrade for peaceful coexistence with WordPress 5.0 and/or Gutenberg
+
 # 0.0.2 
 Improvements for display of tabs for Events
 
@@ -42,6 +45,14 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.1.0
+* Fixed: Determine lat and long automatically from address and post code,https://github.com/bobbingwide/tags/issues/5
+* Changed: Support for WordPress 5.0 and the new block editor, https://github.com/bobbingwide/tags/issues/6
+* Changed: Improve the initial selection of the Select the event selection list,https://github.com/bobbingwide/tags/issues/7
+* Tested: With WordPress 5.0.3
+* Tested: With Gutenberg 4.9.0
+* Tested: With PHP 7.2
+
 # 0.0.2 
 * Changed: Improve display of Events https://github.com/bobbingwide/tags/issues/1
 
@@ -55,6 +66,6 @@ New bespoke plugin. Originally developed to migrate content from Drupal to WordP
 
 ## Further reading 
 If you want to read more about the oik plugins then please visit the
-[oik plugin](http://www.oik-plugins.com/oik)
+[oik plugin](https://www.oik-plugins.com/oik)
 **"the oik plugin - for often included key-information"**
 
