@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015-2017
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * Display the TAGS admin menu
@@ -16,6 +16,7 @@ function tags_lazy_admin_menu() {
 function tags_lazy_admin_page() {
 	p( "TAGS Admin" );
 	alink( null, admin_url( "admin.php?page=tags_competitors" ), "Competitors" );
+	br();
 	alink( null, admin_url( "admin.php?page=tags_results" ), "Results" );
 	bw_flush();
 }

@@ -7,7 +7,7 @@
  */
 function tags_lazy_results_admin_page() {
   oik_require( "bobbforms.inc" );
-	oik_require( "includes/bw_posts.inc" );
+	oik_require( "includes/bw_posts.php" );
 	oik_require( "admin/class-tags-results.php", "tags" );
 	oik_require( "admin/class-tags-result.php", "tags" );
   oik_menu_header( "Results" );

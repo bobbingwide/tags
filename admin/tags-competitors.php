@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * TAGS Competitors admin page
@@ -8,7 +8,7 @@
  */
 function tags_lazy_competitors_admin_page() {
   oik_require( "bobbforms.inc" );
-	oik_require( "includes/bw_posts.inc" );
+	oik_require( "includes/bw_posts.php" );
 	oik_require( "admin/class-tags-competitors.php", "tags" );
 	oik_require( "admin/class-tags-competitor.php", "tags" );
   oik_menu_header( "Competitors" );

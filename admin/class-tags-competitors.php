@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * TAGS_competitors
@@ -9,16 +9,16 @@ class TAGS_competitors {
 
 	public $event;
 	
-	public $competitors;
+	public $competitors = [];
 	
 	//private static $instance;
 	
-	private $posts;
+	private $posts = [];
 	
 	
-	public $members;
+	public $members = [];
 	
-	private $terms;
+	private $terms = [];
 	
 	/**
 	 * Return a single instance of this class
@@ -318,8 +318,37 @@ class TAGS_competitors {
 	
 	function event_selector() {
 		$current_event = $this->get_event();
+		if ( !$current_event ) {
+			$current_event = $this->next_event();
+		}
 		bw_form_field_noderef( "event", "", "Select the event", $current_event, array( "#type" => array( "event"), "#optional" => true ));
 	
+	}
+
+	/**
+	 * Return the Event post for the next event
+	 * [bw_related post_type="event" numberposts=1 meta_key="_date" order=ASC meta_compare="GE" meta_value=.
+	 * orderby=meta_value format="L/F/_/C M e" thumbnail=full exclude=12926 class=next-event]
+	 */
+	function next_event() {
+		$atts = array( "post_type" => "event"
+		, "meta_key" => "_date"
+		, "meta_value" => bw_format_date()
+		, "meta_compare" => ">="
+		, "numberposts" => 1
+		, "post_parent" => 0
+		, "orderby" => "meta_value"
+
+		);
+		$posts = bw_get_posts( $atts );
+		//print_r( $posts );
+		if ( $posts  && count( $posts ) ) {
+			$event = $posts[0];
+		} else {
+			$event = null;
+		}
+		return $event;
+
 	}
 
 	/**
