@@ -44,12 +44,7 @@ function tags_loaded() {
 		if ( $_SERVER['argv'][0] == "boot-fs.php" )   {
 			// This is WP-CLI
 		} else {
-			//oik_require_lib( "oik-cli" );
-			oik_batch_load_cli_functions();
-			if ( oik_batch_run_me( __FILE__ ) ) {
-				//td2w_run();
-				echo "End cli:" . __FUNCTION__ . PHP_EOL; 
-			}
+			// This is oik-batch - see run_tags.php
 		}
 	} else {
 	 
