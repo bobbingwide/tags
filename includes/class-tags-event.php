@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * TAGS_event class

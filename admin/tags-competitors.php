@@ -7,7 +7,7 @@
  *
  */
 function tags_lazy_competitors_admin_page() {
-  oik_require( "bobbforms.inc" );
+  oik_require_lib( "bobbforms" );
 	oik_require( "includes/bw_posts.php" );
 	oik_require( "admin/class-tags-competitors.php", "tags" );
 	oik_require( "admin/class-tags-competitor.php", "tags" );

@@ -6,7 +6,7 @@
  * As you can see most of the work is done in OO code
  */
 function tags_lazy_results_admin_page() {
-  oik_require( "bobbforms.inc" );
+  oik_require_lib( "bobbforms" );
 	oik_require( "includes/bw_posts.php" );
 	oik_require( "admin/class-tags-results.php", "tags" );
 	oik_require( "admin/class-tags-result.php", "tags" );

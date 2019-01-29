@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * Implement the mapping for competitors we're migrating 
@@ -106,7 +106,7 @@ class TD2W_competitors {
 	
 	
 	function load_competitor( $result ) {
-		oik_require( "includes/bw_posts.inc" );
+		oik_require( "includes/bw_posts.php" );
 	
 		$atts = array( "post_type" => "competitor"
 								 , "post_parent" => 0

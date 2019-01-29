@@ -56,7 +56,7 @@ function tags_competitors_admin_page() {
  */
 function tags_save_post_course( $post_id, $post ) {
 	bw_trace2( $_POST, "_POST", true, BW_TRACE_DEBUG );
-	oik_require( "admin/oik-admin.inc" );
+	oik_require( "admin/oik-admin.php" );
 	$input['postal-code'] = bw_array_get( $_POST, "_post_code", null );
 	$input['extended-address'] = bw_array_get( $_POST, "_address", null );
 	if ( $input['postal-code'] || $input['extended-address'] ) { 

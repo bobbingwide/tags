@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * Set some sensible values for Yoast's SEO
@@ -19,7 +19,7 @@ class TD2W_yoast {
 	
 
 	function __construct() {
-		oik_require( "includes/bw_posts.inc" );
+		oik_require( "includes/bw_posts.php" );
 		$this->process();
 	}
 	

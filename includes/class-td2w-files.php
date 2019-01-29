@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 /**
  * Implement the mapping for files we're migrating 
@@ -48,7 +48,7 @@ class TD2W_files {
 	}
 	
 	function load_attachment( $result ) {
-		oik_require( "includes/bw_posts.inc" );
+		oik_require( "includes/bw_posts.php" );
 	
 		$atts = array( "post_type" => "attachment"
 								 , "post_parent" => 0

@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015-2019
 
 
 
@@ -33,7 +33,7 @@ function tags_event() {
  * @return string the generated HTML
  */ 										 
 function tags_events( $atts=null, $content=null, $tag=null ) {
-	oik_require( "includes/bw_posts.inc" );
+	oik_require( "includes/bw_posts.php" );
 	$attr = array( "post_type" => "event" 
 							 //, "posts_per_page" => 20
 							 , "orderby" => "meta_value"
