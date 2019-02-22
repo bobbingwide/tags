@@ -5,7 +5,7 @@
 * Tags: CPTs, golf, events, players, results
 * Requires at least: 4.9.8
 * Tested up to: 5.0.3
-* Stable tag: 0.1.0
+* Stable tag: 0.2.0
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 ## Upgrade Notice 
+# 0.2.0 
+Upgrade for enhanced Player display - with Results and Attendance
+
 # 0.1.0 
 Upgrade for peaceful coexistence with WordPress 5.0 and/or Gutenberg
 
@@ -45,6 +48,9 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.2.0 
+* Added: Results and Attendance section automatically added for a Player, https://github.com/bobbingwide/tags/issues/8
+
 # 0.1.0
 * Fixed: Determine lat and long automatically from address and post code,https://github.com/bobbingwide/tags/issues/5
 * Changed: Support for WordPress 5.0 and the new block editor, https://github.com/bobbingwide/tags/issues/6
