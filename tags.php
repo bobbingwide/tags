@@ -4,7 +4,7 @@
 Plugin Name: TAGS 
 Plugin URI: https://www.bobbingwide.com/oik-plugins/tags
 Description: The Anchor Golf Society 
-Version: 0.1.0
+Version: 0.2.0
 Author: bobbingwide
 Author URI: https://www.oik-plugins.com/author/bobbingwide
 Text Domain: tags
@@ -369,8 +369,9 @@ function tags_register_player() {
 	bw_register_field( "_user", "userref", "User", array( '#theme_null' => false ) );
 	bw_register_field( "_handicap", "numeric", "Handicap", array( '#theme_null' => false ) );
 	bw_register_field( "_uid", "numeric", "Original user ID", array( '#theme' => false ) );
-	//bw_register_field( "_clubs"
-	
+	bw_register_field( "_telephone", "telephone", "Telephone", array( 'theme' => false ) );
+
+	bw_register_field_for_object_type( "_telephone", $post_type );
 	bw_register_field_for_object_type( "membership", $post_type ); 
 	bw_register_field_for_object_type( "_handicap", $post_type );
 	bw_register_field_for_object_type( "_user", $post_type );
@@ -456,7 +457,44 @@ function tags_the_post_player( $post, $content ) {
 	if ( !is_user_logged_in() ) {
 		$content = str_replace( "[bw_fields]", "", $content );
 	}
+
+	if ( is_single()) {
+
+		if ( false === strpos( $content, 'bw_related' ) ) {
+			$results    = tags_the_post_player_results( $post );
+			$content    .= $results;
+			$attendance = tags_the_post_player_attendance( $post );
+			$content    .= $attendance;
+		} else {
+			// Manually coded?
+		}
+	}
 	return( $content );
+}
+
+/**
+ * Displays the table of Results for this player
+ *
+ * Depends on bw_related supporting format=T parameter
+ *
+ * @param object $post the player object
+ * @return string generated HTML
+ */
+
+function tags_the_post_player_results( $post ) {
+	$results = retstag("h3" );
+	$results .= "Results";
+	$results .= retetag( "h3" );
+	$results .= '[bw_related post_type=result meta_key=_player meta_value=${post->ID} fields=_event,result_type,_details order=desc orderby=date format=T posts_per_page=10]';
+	return $results;
+}
+
+function tags_the_post_player_attendance( $post ) {
+	$results = retstag("h3" );
+	$results .= "Attendance";
+	$results .= retetag( "h3" );
+	$results .= '[bw_related post_type=competitor meta_key=_player meta_value=${post->ID} fields=_event,playing_status format=T orderby=date order=desc posts_per_page=10 ]';
+	return $results;
 }
 
 /**
