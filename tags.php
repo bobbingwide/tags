@@ -92,6 +92,7 @@ function tags_oik_fields_loaded() {
  */
 function tags_oik_add_shortcodes() {
 	bw_add_shortcode( "tags_events", "tags_events", oik_path( "shortcodes/tags-events.php", "tags"), false );
+	bw_add_shortcode( "tags_results", "tags_results", oik_path( "shortcodes/tags-results.php", "tags"), false );
 }
 
 
