@@ -6,6 +6,8 @@
  */
 class TAGS_event_content extends TAGS_content {
 
+	//private $query_results;
+
 	function __construct( $post ) {
 		parent::__construct( $post );
 		$tabs = array();
@@ -97,10 +99,30 @@ class TAGS_event_content extends TAGS_content {
 	 * so it orders by the date ASC - which is fine for stuff in the past
 	 */
 	function results() {
-		$content = sprintf( '[bw_table post_type=result meta_key=_event fields=result_type,_player,_details meta_value=%s numberposts=-1 orderby=result_type]'
-											, $this->post->ID
-											);
-		e( $content ); 
+		if ( false ) {
+			$this->local_results();
+		} else {
+			$content=sprintf( '[bw_table post_type=result meta_key=_event fields=result_type,_player,_details meta_value=%s numberposts=-1 orderby=ID ]'
+				, $this->post->ID
+			);
+			e( $content );
+		}
+	}
+
+	/**
+	 * An attempt to build an alternative to the bw_table solution in results()
+	 * before I changed the orderby=result_type attribute to orderby=ID
+	 * ... which works because I create the results in the correct order using TAGS admin > results.
+	 */
+	function local_results() {
+		if ( $this->query_results ) {
+			foreach ( $this->query_results as $query_result ) {
+			   $result_type = get_the_term_list( $query_result->ID, 'result_type', "", ",", "" );
+			   $player = bw_custom_column_post_meta( '_player', $query_result->ID );
+			   $details = bw_custom_column_post_meta( '_details', $query_result->ID );
+
+			}
+		}
 	}
 
 	/**
@@ -116,6 +138,7 @@ class TAGS_event_content extends TAGS_content {
 								 , "numberposts" => -1
 								 );
 		$posts = bw_get_posts( $atts );
+		//$this->query_results = $posts;
 		return( $posts );
 	}
 
