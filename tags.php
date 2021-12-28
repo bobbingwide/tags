@@ -91,8 +91,10 @@ function tags_oik_fields_loaded() {
  * Implement "oik_add_shortcodes" for TAGS
  */
 function tags_oik_add_shortcodes() {
+
 	bw_add_shortcode( "tags_events", "tags_events", oik_path( "shortcodes/tags-events.php", "tags"), false );
 	bw_add_shortcode( "tags_results", "tags_results", oik_path( "shortcodes/tags-results.php", "tags"), false );
+	bw_add_shortcode( 'tags_achievements', 'tags_achievements', oik_path( 'shortcodes/tags-achievements.php', 'tags'), false );
 }
 
 
@@ -461,9 +463,11 @@ function tags_the_post_player( $post, $content ) {
 
 	if ( is_single()) {
 
-		if ( false === strpos( $content, 'bw_related' ) ) {
-			$results    = tags_the_post_player_results( $post );
-			$content    .= $results;
+		if ( false === strpos( $content, 'tags_achievements' ) ) {
+			$results=tags_the_post_player_results( $post );
+			$content.=$results;
+		}
+		if ( false === strpos( $content, 'bw_related') ) {
 			$attendance = tags_the_post_player_attendance( $post );
 			$content    .= $attendance;
 		} else {
@@ -483,18 +487,18 @@ function tags_the_post_player( $post, $content ) {
  */
 
 function tags_the_post_player_results( $post ) {
-	$results = retstag("h3" );
-	$results .= "Results";
-	$results .= retetag( "h3" );
-	$results .= '[bw_related post_type=result meta_key=_player meta_value=${post->ID} fields=_event,result_type,_details order=desc orderby=date format=T posts_per_page=10]';
+
+
+	$results = "[tags_achievements player=" . $post->ID . "]";
+	//$results .= '[bw_related post_type=result meta_key=_player meta_value=${post->ID} fields=_event,result_type,_details order=desc orderby=date format=T posts_per_page=100]';
 	return $results;
 }
 
 function tags_the_post_player_attendance( $post ) {
-	$results = retstag("h3" );
+	$results = retstag("h2" );
 	$results .= "Attendance";
-	$results .= retetag( "h3" );
-	$results .= '[bw_related post_type=competitor meta_key=_player meta_value=${post->ID} fields=_event,playing_status format=T orderby=date order=desc posts_per_page=10 ]';
+	$results .= retetag( "h2" );
+	$results .= '[bw_related post_type=competitor meta_key=_player meta_value=${post->ID} fields=_event,playing_status format=T orderby=date order=desc posts_per_page=20 ]';
 	return $results;
 }
 
