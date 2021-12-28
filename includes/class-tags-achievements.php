@@ -64,7 +64,7 @@ class TAGS_achievements {
 		h2( 'Results');
 		$this->report_achievements(['Winner','Runner up','Third']);
 		h2( 'Birdies or better');
-		$this->report_achievements( ['Birdies','Eagle','Hole-in-one']);
+		$this->report_achievements( ['Hole-in-one','Eagle','Birdies']);
 		h2( 'Other' );
 		$this->report_achievements( ['NTP', 'NTP in two', 'Longest Drive', 'Miscellaneous' ] );
 
