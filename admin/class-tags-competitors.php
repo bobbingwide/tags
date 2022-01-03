@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015-2019
+<?php // (C) Copyright Bobbing Wide 2015-2019, 2022
 
 /**
  * TAGS_competitors
@@ -77,6 +77,7 @@ class TAGS_competitors {
 									 , "orderby" => "title"
 									 , "order" => "ASC"
 									 , "numberposts" => -1
+									 , "exclude" => -1
 									 );
 			$this->posts = bw_get_posts( $atts );
 			c( "Posts:" . count( $this->posts ) );
@@ -121,6 +122,7 @@ class TAGS_competitors {
 									 , "orderby" => "title"
 									 , "order" => "ASC"
 									 , "numberposts" => -1
+									 , "exclude" => -1
 									 );
 			$this->members = bw_get_posts( $atts );
 			p( "Members:" . count( $this->members ) );
@@ -162,18 +164,7 @@ class TAGS_competitors {
 	 * Display the list of members that have not been added for this event.
 	 */
 	function member_display( $member ) {
-	
-		$row = array();
-		$row[] = $member->post_title;
-		$row[] = icheckbox( "player_yes[{$member->ID}]", false );
-		$row[] = icheckbox( "player_buggy[$member->ID}", false );
-		$row[] = icheckbox( "player_no[{$member->ID}]", false );
-		$row[] = icheckbox( "player_tbc[{$member->ID}]", true );
-
-		//bw_tablerow( $row );
-		
 		bw_radio( "player[{$member->ID}]", $member->post_title, array( "yes", "buggy", "no", "tbc" ), array( "Yes", "Buggy", "No", "TBC" ), null, array( null, null, null, null )  );
-	
 	}
 	
 	/**
@@ -249,7 +240,7 @@ class TAGS_competitors {
 	
 	/**
 	 * Update the terms ( in $this->terms )
-	 * setting the new status and removing any previous status in the same group: yes, no, tbc
+	 * setting the new status and removing any previous status in the same group: yes, no, tbc, buggy
 	 * 
 	 */
 	function update_terms( $ID, $status ) {
