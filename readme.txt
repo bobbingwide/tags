@@ -4,7 +4,7 @@ Donate link: https://www.oik-plugins.com/oik/oik-donate/
 Tags: CPTs, golf, events, players, results
 Requires at least: 5.0.0
 Tested up to: 5.8.2
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 == Upgrade Notice ==
+= 0.3.1 = 
+Upgrade to support competitors requiring Buggies.
+
 = 0.3.0 =
 Upgrade for enhanced Player display using [tags_achievements] and  yearly results [tags_results] shortcode.
 
@@ -50,6 +53,13 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 == Changelog ==
+= 0.3.1 = 
+* Changed: Added Buggy option for competitors #11
+* Fixed: Avoid Warning for null result_type on the 8 new rows #12
+* Fixed: Cater for most recent update in bw_get_posts() by using exclude => -1 #12
+* Tested: With WordPress 5.8.2
+* Tested: With PHP 8.0
+
 = 0.3.0 =
 * Changed: Implement [tags_achievements] shortcode to replace the results [bw_related] shortcode #8
 * Changed: Change orderby=result_type to orderby=ID #10
