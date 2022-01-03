@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015-2019
+<?php // (C) Copyright Bobbing Wide 2015-2019, 2022
 
 /**
  * TAGS_results
@@ -86,7 +86,8 @@ class TAGS_results {
 									 , "orderby" => "result_type"
 									 , "order" => "ASC"
 									 , "numberposts" => -1
-																		 );
+									 , "exclude" => -1
+									 );
 			$this->posts = bw_get_posts( $atts );
 			c( "Posts:" . count( $this->posts ) );
 		}
@@ -147,6 +148,7 @@ class TAGS_results {
 									 , "numberposts" => -1
 									 , "meta_key" => "_event"
 									 , "meta_value" => $this->event->ID
+									 , "exclude" => -1
 									 );
 			$competitors = bw_get_posts( $atts );
 			p( "competitors:" . count( $competitors ) );
