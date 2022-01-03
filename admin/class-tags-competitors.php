@@ -166,11 +166,13 @@ class TAGS_competitors {
 		$row = array();
 		$row[] = $member->post_title;
 		$row[] = icheckbox( "player_yes[{$member->ID}]", false );
+		$row[] = icheckbox( "player_buggy[$member->ID}", false );
 		$row[] = icheckbox( "player_no[{$member->ID}]", false );
 		$row[] = icheckbox( "player_tbc[{$member->ID}]", true );
+
 		//bw_tablerow( $row );
 		
-		bw_radio( "player[{$member->ID}]", $member->post_title, array( "yes", "no", "tbc" ), array( "Yes", "No", "TBC" ), null, array( null, null, null )  );
+		bw_radio( "player[{$member->ID}]", $member->post_title, array( "yes", "buggy", "no", "tbc" ), array( "Yes", "Buggy", "No", "TBC" ), null, array( null, null, null, null )  );
 	
 	}
 	
@@ -250,9 +252,8 @@ class TAGS_competitors {
 	 * setting the new status and removing any previous status in the same group: yes, no, tbc
 	 * 
 	 */
-	
 	function update_terms( $ID, $status ) {
-		$terms = array_diff( $this->terms, array( "yes", "no", "tbc" ) );
+		$terms = array_diff( $this->terms, array( "yes", "no", "tbc", "buggy" ) );
 		$terms[] = $status;
 		$this->terms = $terms;
 		//print_r( $terms );

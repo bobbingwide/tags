@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015, 2022
 
 /**
  * Single competitor
@@ -33,6 +33,10 @@ class TAGS_competitor {
 	function update_competitor() {
 	
 	}
+
+	function playing_buggy() {
+		return $this->playing( 'buggy');
+	}
 	
 	function playing_yes() {
 		
@@ -56,6 +60,7 @@ class TAGS_competitor {
 	
 	function statuses() {
 		$this->playing['yes'] = false;
+		$this->playing['buggy'] = false;
 		$this->playing['no'] = false;
 		$this->playing['tbc'] = false;
 		foreach ( $this->statuses as $status ) {
@@ -112,8 +117,8 @@ class TAGS_competitor {
 		
 		bw_radio( "competitor[{$this->ID}]"
 						, $this->player()
-						, array( "yes", "no", "tbc" )
-						, array( "Yes", "No", "TBC" )
+						, array( "yes", "buggy", "no", "tbc" )
+						, array( "Yes", "Buggy", "No", "TBC" )
 						, null
 						, $checked_array 
 						);
