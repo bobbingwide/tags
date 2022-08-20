@@ -63,14 +63,17 @@ class TAGS_results {
 	
 	/** 
 	 * Return a WordPress time stamp representing the event date
-	 * 
+	 *
+	 * If set use the post meta _date field, appending the current time
+	 * to create the post date which should be on/before the current date.
 	 */
 	function event_date() {
 		$event_date = $this->event->post_date;
 		$_date = get_post_meta( $this->event->ID, "_date", true );
 		if ( $_date ) {
-			$event_date = $_date . substr( $event_date, 10 ); // yyyy-mm-dd 
+			$event_date = $_date . bw_format_date( null, ' H:i:s' );
 		}
+		//bw_trace2( $event_date, "event_date", false, BW_TRACE_DEBUG);
 		return( $event_date );
 	}
 	
