@@ -148,7 +148,9 @@ class TAGS_event_content extends TAGS_content {
 	function course() {
 		$course = get_post_meta( $this->post->ID, "_course", true );
 		$content = sprintf( "[bw_pages post_type=course id=%s format=C/_/e thumbnail=full]", $course );
-		e( $content );																			 
+		$content = tags_the_post_course( $course, $content );
+		e( $content );
+
 	}
 	
 	/**

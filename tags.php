@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015-2022
+<?php
 
 /*
 Plugin Name: TAGS 
@@ -275,7 +275,7 @@ function tags_register_event() {
  */
 function tags_holes() {
 	$holes = array( 0 => "None" );
-	for ( $hole= 1; $hole<=18; $hole++ ) {
+	for ( $hole= 1; $hole<=27; $hole++ ) {
 		$holes[$hole] = $hole;
 	}
 	return( $holes );
@@ -427,7 +427,7 @@ function tags_the_content( $content ) {
         break;
 				
 			case "course":
-				$content = tags_the_post_course( $post, $content );
+				$content = tags_the_post_course( $post->ID, $content );
 				break;	
     }
   }  
@@ -521,6 +521,29 @@ function tags_the_post_trophy( $post, $content ) {
  * @return string - the updated content
  */
 function tags_the_post_course( $post, $content ) {
+
+
+	if ( is_single()) {
+
+		// Consider adding [bw_fields] or <!-- wp:oik-block/fields /-->
+		if ( false === strpos( $content, '[bw_fields]') &&
+			false === strpos( $content, '<!-- wp:oik-block/fields /-->') ) {
+			$content .= '<!-- wp:oik-block/fields /-->';
+		}
+
+		if ( false === strpos( $content, '[bw_related' ) ) {
+
+			$results=retstag( "h2" );
+			$results.="Events";
+			$results.=retetag( "h2" );
+			$results .= "[bw_related post_type=event meta_key=_course meta_value=${post} orderby=_date order=desc posts_per_page=10]";
+			$content.=$results;
+
+		}
+	}
+
+	bw_trace2( $content, "Content", true, BW_TRACE_VERBOSE );
+
 	return( $content );
 }
 
