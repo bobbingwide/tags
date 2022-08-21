@@ -4,8 +4,8 @@
 * Donate link: https://www.oik-plugins.com/oik/oik-donate/
 * Tags: CPTs, golf, events, players, results
 * Requires at least: 5.0.0
-* Tested up to: 5.8.2
-* Stable tag: 0.3.1
+* Tested up to: 6.0.1
+* Stable tag: 0.4.0
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,7 +31,10 @@ and the theme relies on oik-rwd for some responsive behaviour.
 ## Screenshots 
 None
 
-## Upgrade Notice 
+## Upgrade Notice
+# 0.4.0 
+Upgrade for NTP on 27 holes, Results entry improvement and display of Events by Course.
+
 # 0.3.1 
 Upgrade to support competitors requiring Buggies.
 
@@ -54,6 +57,13 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.4.0 
+* Changed: Automatically display Events for Courses #14
+* Changed: Allow for 27 holes #15
+* Fixed: Set event_date on/before the current time so it doesn't become scheduled #13
+* Tested: With WordPress 6.0.1
+* Tested: With PHP 8.0
+
 # 0.3.1 
 * Changed: Added Buggy option for competitors #11
 * Fixed: Avoid Warning for null result_type on the 8 new rows #12
