@@ -536,7 +536,7 @@ function tags_the_post_course( $post, $content ) {
 			$results=retstag( "h2" );
 			$results.="Events";
 			$results.=retetag( "h2" );
-			$results .= "[bw_related post_type=event meta_key=_course meta_value=${post} orderby=_date order=desc posts_per_page=10]";
+			$results .= "[bw_related post_type=event meta_key=_course meta_value=${post} orderby=_date order=desc posts_per_page=10 exclude=-1]";
 			$content.=$results;
 
 		}
