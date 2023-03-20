@@ -5,7 +5,7 @@
 * Tags: CPTs, golf, events, players, results
 * Requires at least: 5.0.0
 * Tested up to: 6.2-RC2
-* Stable tag: 0.4.2
+* Stable tag: 0.4.3
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 ## Upgrade Notice
+# 0.4.3 
+Contains a fix for PHP 7.4 compatibility.
+
 # 0.4.2 
 Upgrade for total player summary and tee time draw recommendation.
 
@@ -63,6 +66,9 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.4.3 
+* Fixed: PHP 7.4 compatibility #16
+
 # 0.4.2 
 * Fixed: Change _cost field to text to allow for TBC or FREE #17
 * Added: Add player grid logic below the grouping #16
