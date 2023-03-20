@@ -71,8 +71,13 @@ class TAGS_event_content extends TAGS_content {
 		e( $content ); 
 		$groups = sprintf( "[bw_group post_type=competitor meta_key=_event fields=_player,playing_status meta_value=%s numberposts=-1 field='playing_status']"
 										, $this->post->ID
-									  );#
-		e( $groups );									
+									  );
+		e( $groups );
+
+		$player_grid = $this->player_grid();
+		e( $player_grid );
+
+
 	  									
 	}
 	
@@ -161,6 +166,78 @@ class TAGS_event_content extends TAGS_content {
 	 */
 	function pre_tabs() {
 		e( "[bw_fields featured,_tee_time,_cost,_notes]" );
+	}
+
+	/**
+	 * Summery of players who've said Yes.
+	 */
+	function player_grid() {
+		$posts = bw_get_posts( ['post_type' => 'competitor', 'numberposts' => -1, 'meta_key' => '_event', 'meta_value' => $this->post->ID ]);
+		$total_players = 0;
+		$tbc = 0;
+		foreach ( $posts as $post ) {
+			$playing_status = wp_get_post_terms( $post->ID, 'playing_status');
+			//print_r( $playing_status );
+			switch (  $playing_status[0]->slug ) {
+				case 'buggy':
+				case 'yes':
+					$total_players++;
+					break;
+				case 'tbc':
+					$tbc++;
+					break;
+				default:
+					//
+
+			}
+
+		}
+		$grid = "Total players: " . $total_players;
+
+		if ( $tbc > 0 ) {
+			$grid.="<br>Allow for: " . $total_players + $tbc;
+			$grid .= $this->as_four_balls(  $total_players + $tbc );
+		} else {
+			$grid.=$this->as_four_balls( $total_players );
+		}
+
+		return $grid ;
+	}
+
+	/**
+	 * Suggests how to draw the tee times.
+	 *
+	 * Caters for 12 to 32 players.
+	 * 
+	 * @param integer $players Number of players
+	 * @return string
+	 */
+	function as_four_balls( $players) {
+		$grid_lookup = [
+			12 => '3 four balls',
+			13 => '3 three balls, one 4 ball',
+			14 => '2 three balls, two 4 balls',
+			15 => 'One three ball, three 4 balls',
+			16 => 'Four 4 balls',
+			17 => '3 three balls, two 4 balls',
+			18 => '2 three balls, 3 four balls',
+			19 => 'One three ball, 4 four balls',
+			20 => '5 four balls',
+			21 => '3 three balls, 3 four balls',
+			22 => '2 three balls, 4 four balls',
+			23 => 'One three ball, 5 four balls',
+			24 => '6 four balls',
+			25 => '3 three balls, 4 four balls',
+			26 => '2 three balls, 5 four balls',
+			27 => 'One three ball, 6 four balls',
+			28 => '7 four balls',
+			29 => '3 three balls, 5 four balls',
+			30 => '2 three balls, 6 four balls',
+			31 => 'One three ball, 7 four balls',
+			32 => '8 four balls'
+			];
+		$grid = bw_array_get( $grid_lookup, $players, '');
+		return '<br>' . $grid;
 	}
 	
 
