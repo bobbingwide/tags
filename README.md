@@ -4,8 +4,8 @@
 * Donate link: https://www.oik-plugins.com/oik/oik-donate/
 * Tags: CPTs, golf, events, players, results
 * Requires at least: 5.0.0
-* Tested up to: 6.0.1
-* Stable tag: 0.4.1
+* Tested up to: 6.2-RC2
+* Stable tag: 0.4.2
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,6 +32,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 ## Upgrade Notice
+# 0.4.2 
+Upgrade for total player summary and tee time draw recommendation.
+
 # 0.4.1 
 Upgrade for an improved solution for the Events list on the Courses tab.
 
@@ -60,6 +63,12 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.4.2 
+* Fixed: Change _cost field to text to allow for TBC or FREE #17
+* Added: Add player grid logic below the grouping #16
+* Tested: With WordPress 6.2-RC2
+* Tested: With PHP 8.0
+
 # 0.4.1 
 * Fixed: Added exclude=-1 parameter for Events list on Courses tab #14
 

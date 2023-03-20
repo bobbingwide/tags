@@ -208,7 +208,7 @@ class TAGS_event_content extends TAGS_content {
 	 * Suggests how to draw the tee times.
 	 *
 	 * Caters for 12 to 32 players.
-	 * 
+	 *
 	 * @param integer $players Number of players
 	 * @return string
 	 */
