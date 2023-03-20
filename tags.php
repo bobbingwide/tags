@@ -251,7 +251,7 @@ function tags_register_event() {
   bw_register_field( "_course", "noderef", "Course", array( "type" => "course", "#optional" => true ) ); 
 	bw_register_field( "_date", "date", "Date" );
 	bw_register_field( "_tee_time", "time", "First tee", array( '#theme_null' => false ) );
-	bw_register_field( "_cost", "currency", "Cost", array( '#theme_null' => false ) );
+	bw_register_field( "_cost", "text", "Cost", array( '#theme_null' => false ) );
   bw_register_field( "_trophy", "noderef", "Trophy", array( "type" => "trophy", "#optional" => true, '#theme_null' => false ) ); 
 	bw_register_field( "_shirt", "text", "Shirt colour", array( '#theme_null' => false ) );
 	bw_register_field( "_ntps", "select", "NTPs", array( "#multiple" => 18, '#options' => tags_holes(), '#theme_null' => false ) );
