@@ -193,14 +193,11 @@ class TAGS_event_content extends TAGS_content {
 
 		}
 		$grid = "Total players: " . $total_players;
-
 		if ( $tbc > 0 ) {
-			$grid.="<br>Allow for: " . $total_players + $tbc;
-			$grid .= $this->as_four_balls(  $total_players + $tbc );
-		} else {
-			$grid.=$this->as_four_balls( $total_players );
+			$total_players += $tbc;
+			$grid.="<br>Allow for: " . $total_players;
 		}
-
+		$grid.=$this->as_four_balls( $total_players );
 		return $grid ;
 	}
 
