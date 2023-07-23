@@ -154,6 +154,8 @@ function tags_register_post_types() {
 	tags_register_event();
 	tags_register_competitor();
 	tags_register_result();
+
+	tags_register_player_mem();
 }
 /**
  * Register a course 
@@ -381,6 +383,17 @@ function tags_register_player() {
 	bw_register_field_for_object_type( "_nid", $post_type );
 	bw_register_field_for_object_type( "_uid", $post_type );
 
+}
+
+function tags_register_player_mem() {
+	$field_args = array( "#callback" => "bw_fields_get_player_mem"
+	, "#parms" => "_player"
+	, "#plugin" => "tags"
+	, "#file" => "includes/tags-virtual-player-mem.php"
+	, "#form" => false
+	, "hint" => __( "virtual field", "tags" )
+	);
+	bw_register_field( "_player_mem", "virtual", "Player", $field_args );
 }
 
 
