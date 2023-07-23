@@ -65,7 +65,7 @@ class TAGS_event_content extends TAGS_content {
 	 */
 	function players() {
 		//e( "[players]" );
-		$content = sprintf( "[bw_table post_type=competitor meta_key=_event fields=_player,playing_status meta_value=%s numberposts=-1 orderby=title order=ASC]"
+		$content = sprintf( "[bw_table post_type=competitor meta_key=_event fields=_player_mem,playing_status meta_value=%s numberposts=-1 orderby=title order=ASC]"
 											, $this->post->ID
 											);
 		e( $content ); 
