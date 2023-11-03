@@ -4,9 +4,9 @@
 Plugin Name: TAGS 
 Plugin URI: https://www.bobbingwide.com/oik-plugins/tags
 Description: The Anchor Golf Society 
-Version: 0.5.0
+Version: 0.6.0
 Author: bobbingwide
-Author URI: https://www.oik-plugins.com/author/bobbingwide
+Author URI: https://bobbingwide.com/about-bobbing-wide
 Text Domain: tags
 Domain Path: /languages/
 License: GPLv2 or later

@@ -3,8 +3,8 @@ Contributors: bobbingwide
 Donate link: https://www.oik-plugins.com/oik/oik-donate/
 Tags: CPTs, golf, events, players, results
 Requires at least: 5.0.0
-Tested up to: 6.2.2
-Stable tag: 0.5.0
+Tested up to: 6.4-RC3
+Stable tag: 0.6.0
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,9 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 == Upgrade Notice 
+= 0.6.0 = 
+Update for support for PHP 8.1 and PHP 8.2
+
 = 0.5.0 =
 Update for Player membership (_player_mem ) virtual field. 
 
@@ -68,6 +71,12 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 == Changelog ==
+= 0.6.0 =
+* Changed: Support PHP 8.1 and PHP 8.2 #19
+* Tested: With WordPress 6.4-RC3
+* Tested: With PHP 8.0, PHP 8.1 and PHP 8.2
+* Tested: With PHPUnit 9.6
+
 = 0.5.0 =
 * Changed: Display information regarding a player's membership status on the Player list for future events. #18
 * Tested: With WordPress 6.2.2
