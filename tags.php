@@ -503,7 +503,7 @@ function tags_the_post_player_results( $post ) {
 
 
 	$results = "[tags_achievements player=" . $post->ID . "]";
-	//$results .= '[bw_related post_type=result meta_key=_player meta_value=${post->ID} fields=_event,result_type,_details order=desc orderby=date format=T posts_per_page=100]';
+	//$results .= '[bw_related post_type=result meta_key=_player meta_value={$post->ID} fields=_event,result_type,_details order=desc orderby=date format=T posts_per_page=100]';
 	return $results;
 }
 
@@ -511,7 +511,7 @@ function tags_the_post_player_attendance( $post ) {
 	$results = retstag("h2" );
 	$results .= "Attendance";
 	$results .= retetag( "h2" );
-	$results .= '[bw_related post_type=competitor meta_key=_player meta_value=${post->ID} fields=_event,playing_status format=T orderby=date order=desc posts_per_page=20 ]';
+	$results .= '[bw_related post_type=competitor meta_key=_player meta_value={$post->ID} fields=_event,playing_status format=T orderby=date order=desc posts_per_page=20 ]';
 	return $results;
 }
 
@@ -549,7 +549,7 @@ function tags_the_post_course( $post, $content ) {
 			$results=retstag( "h2" );
 			$results.="Events";
 			$results.=retetag( "h2" );
-			$results .= "[bw_related post_type=event meta_key=_course meta_value=${post} orderby=_date order=desc posts_per_page=10 exclude=-1]";
+			$results .= "[bw_related post_type=event meta_key=_course meta_value={$post} orderby=_date order=desc posts_per_page=10 exclude=-1]";
 			$content.=$results;
 
 		}
