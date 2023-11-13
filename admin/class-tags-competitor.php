@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015, 2022
+<?php // (C) Copyright Bobbing Wide 2015, 2022, 2023
 
 /**
  * Single competitor
@@ -52,7 +52,7 @@ class TAGS_competitor {
 	}
 	
 	function playing( $name ) {
-		$checkbox = "event_${name}[" . $this->ID . "]";
+		$checkbox = "event_{$name}[" . $this->ID . "]";
 		$it = icheckbox( $checkbox, $this->playing[ $name ] ); 
 		return( $it );
 		
