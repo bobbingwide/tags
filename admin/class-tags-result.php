@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015, 2021
+<?php // (C) Copyright Bobbing Wide 2015, 2021, 2023
 
 /**
  * Single result
@@ -38,6 +38,7 @@ class TAGS_result {
 		} else {
 			$this->ID = 0;
 			$this->result_type = [ '0' ];  // Sets the result type to 0 for None.
+			$this->event = null;
 		}
 	}
 	
