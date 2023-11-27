@@ -23,7 +23,8 @@ class TAGS_results {
 	/* 
 	 * ID of the result we're updating
 	 */								
-	private $result_ID; 
+	private $result_ID;
+	public $players;
 	
 	
 	/**
