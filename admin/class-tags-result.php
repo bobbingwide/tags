@@ -105,6 +105,9 @@ class TAGS_result {
 	}
 	 
 	function event() {
+		if ( null === $this->event) {
+			return '';
+		}
 		$permalink = get_permalink( $this->event );
 		$link = retlink( null, $permalink, $this->event );
 		return( $link );
