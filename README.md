@@ -4,8 +4,8 @@
 * Donate link: https://www.oik-plugins.com/oik/oik-donate/
 * Tags: CPTs, golf, events, players, results
 * Requires at least: 5.0.0
-* Tested up to: 6.4.1
-* Stable tag: 0.6.1
+* Tested up to: 6.4.3
+* Stable tag: 0.6.2
 * License: GPL v3
 * License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,7 +32,10 @@ and the theme relies on oik-rwd for some responsive behaviour.
 None
 
 ## Upgrade Notice
-# 0.6.0 
+# 0.6.2 
+Update for support for PHP 8.3
+
+# 0.6.1 
 Update for support for PHP 8.1 and PHP 8.2
 
 # 0.6.0 
@@ -75,6 +78,13 @@ Improvements for display of tabs for Events
 New bespoke plugin. Originally developed to migrate content from Drupal to WordPress.
 
 ## Changelog 
+# 0.6.2 
+* Changed: Support PHP 8.1, PHP 8.2 and PHP 8.3 #21
+* Fixed: Unexpected links when updating Results #20
+* Tested: With WordPress 6.4.3
+* Tested: With PHP 8.3
+* Tested: With PHPUnit 9.6
+
 # 0.6.1 
 * Fixed: Unexpected links when updating Results #20
 * Changed: Support PHP 8.1 and PHP 8.2 #19
