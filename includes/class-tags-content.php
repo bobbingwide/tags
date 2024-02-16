@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015
+<?php // (C) Copyright Bobbing Wide 2015, 2024
 
 /**
  * Content enhancing 
@@ -43,7 +43,7 @@ class TAGS_content {
 	function show_tabs() {
 		$current_tab = $this->selected();
 		$url = get_permalink( $this->post->ID );
-		sdiv( get_class(). "-info" );
+		sdiv( get_parent_class( $this ). "-info" );
 		sul( null, "sections" );
 		$tabs = $this->tabs;
 		foreach ( $tabs as $tab_name => $tab ) {
@@ -69,7 +69,7 @@ class TAGS_content {
 	function show_content() {
 	
 		sediv( "clear" );
-		sdiv( get_class(). "-body" );
+		sdiv( get_parent_class( $this ). "-body" );
 		$tab = $this->selected();
 		call_user_func( $tab->method );
 		ediv();

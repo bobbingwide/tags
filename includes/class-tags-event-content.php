@@ -1,4 +1,4 @@
-<?php // (C) Copyright Bobbing Wide 2015-2019
+<?php // (C) Copyright Bobbing Wide 2015-2019, 2024
 
 /**
  * Implement TAGS Event tab content enhancement
@@ -65,7 +65,7 @@ class TAGS_event_content extends TAGS_content {
 	 */
 	function players() {
 		//e( "[players]" );
-		$content = sprintf( "[bw_table post_type=competitor meta_key=_event fields=_player_mem,playing_status meta_value=%s numberposts=-1 orderby=title order=ASC]"
+		$content = sprintf( "[bw_table post_type=competitor meta_key=_event fields=_player_mem,playing_status meta_value=%s numberposts=-1 orderby=post_title order=ASC]"
 											, $this->post->ID
 											);
 		e( $content ); 
@@ -92,6 +92,8 @@ class TAGS_event_content extends TAGS_content {
 								 , "meta_key" => "_event"
 								 , "meta_value" => $this->post->ID
 								 , "numberposts" => -1
+								,"orderby" => 'post_title'
+			, "order" => 'ASC'
 								 );
 		$posts = bw_get_posts( $atts );
 		return( $posts );
